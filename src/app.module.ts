@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
-import { OrganizationController } from './organization/organization.controller';
 import { OrganizationModule } from './organization/organization.module';
+import { ConfigModule } from '@nestjs/config';
+import dbConfig from './app.config';
 
 @Module({
-  imports: [UserModule, OrganizationModule],
+  imports: [ ConfigModule.forRoot({isGlobal: true, load: [dbConfig]}), UserModule, OrganizationModule],
   controllers: [],
   providers: [],
 })

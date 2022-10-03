@@ -7,21 +7,22 @@ import { I2FAToken } from './user.interface';
   name: 'user',
   primaryKey: {
     partitionKey: 'USER#{{id}}',
-    sortKey: 'USER#{{id}}',
+    // sortKey: 'USER#{{id}}'
   },
-  indexes: {
-    // specify GSI1 key - "GSI1" named global secondary index needs to exist in above table declaration
-    GSI1: {
-      partitionKey: 'USER#{{id}}#STATUS#{{status}}',
-      sortKey: 'USER#{{id}}#ACTIVE#{{active}}',
-      type: INDEX_TYPE.GSI,
-    },
-    // specify LSI1 key
-    LSI1: {
-      sortKey: 'TICKETS#UPDATED_AT#{{updatedAt}}',
-      type: INDEX_TYPE.LSI,
-    },
-  },
+//   indexes: {
+//     // specify GSI1 key - "GSI1" named global secondary index needs to exist in above table declaration
+//     GSI1: {
+//       partitionKey: 'USER#{{id}}#STATUS#{{status}}',
+//       sortKey: 'USER#{{id}}#ACTIVE#{{active}}',
+//       type: INDEX_TYPE.GSI,
+//     },
+//     // specify LSI1 key
+//     LSI1: {
+//       sortKey: 'TICKETS#UPDATED_AT#{{updatedAt}}',
+//       type: INDEX_TYPE.LSI,
+//     },
+//   },
+
 })
 
 export class User {
