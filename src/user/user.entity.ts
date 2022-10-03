@@ -1,11 +1,17 @@
 import { Attribute, Entity, AutoGenerateAttribute, INDEX_TYPE } from "@typedorm/common";
 import { AUTO_GENERATE_ATTRIBUTE_STRATEGY } from "@typedorm/common";
 import { I2FAToken } from "./user.interface";
+import { IsEmail, IsNotEmpty, IsEnum} from 'class-validator';
+
+enum status_enum {
+    PENDING = "PENDING",
+    APPROVED = "APPROVED"
+}
 
 @Entity({
     name: "user",
     primaryKey: {
-        partitionKey: "USER#{{id}}",
+        partitionKey: "{{email}}",
     },
 })
 export class User {
@@ -15,10 +21,13 @@ export class User {
     id: string;
 
     @Attribute()
+    @IsNotEmpty()
     organizationId: string[];
 
     @Attribute()
+    @IsEmail()
     email: string;
+    
 
     @Attribute()
     firstName: string;
@@ -27,6 +36,7 @@ export class User {
     lastName: string;
 
     @Attribute()
+    @IsEnum(status_enum)
     status: string;
 
     @Attribute()
