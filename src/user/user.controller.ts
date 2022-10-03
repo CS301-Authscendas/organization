@@ -7,7 +7,7 @@ import { plainToClass } from "class-transformer";
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
-    @Get()
+    @Get("/health")
     getHealth() {
         return "Organization service is working!";
     }
