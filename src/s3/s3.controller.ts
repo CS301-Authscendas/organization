@@ -7,6 +7,6 @@ export class S3Controller {
 
     @Get()
     async getFile(@Body() req: any) {
-        return await this.s3Service.getFile(req.bucket, req.fileName);
+        return await this.s3Service.getExcelFile(req.bucket, req.fileName);
     }
 }

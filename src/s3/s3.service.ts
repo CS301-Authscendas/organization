@@ -1,5 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { S3 } from "aws-sdk";
+import xlsx from "node-xlsx";
+import { IS3File } from "./s3.interface";
 
 @Injectable()
 export class S3Service {
@@ -12,9 +14,11 @@ export class S3Service {
         });
     }
 
-    async getFile(bucket: string, fileName: string) {
+    async getExcelFile(bucket: string, fileName: string): Promise<IS3File> {
         const params = { Bucket: bucket, Key: fileName };
-        const s3 = await this.s3.getObject(params).promise();
-        console.log(s3.Body?.toString("utf-8"));
+        const stream = await this.s3.getObject(params).promise();
+        const workbook = xlsx.parse(stream.Body)[0];
+
+        return workbook;
     }
 }
