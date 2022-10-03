@@ -1,5 +1,4 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
 import { createConnection, EntityManager, getEntityManager } from "@typedorm/core";
 import { DocumentClientV2 } from "@typedorm/document-client";
 import * as AWS from "aws-sdk";
@@ -10,35 +9,40 @@ import { userTable } from "./user.table";
 @Injectable()
 export class UserRepository {
     private documentClient: DocumentClientV2;
+    private USER_CONN = "user_conn";
+    private entityManager: EntityManager;
 
     constructor() {
-        const configService = new ConfigService();
-        AWS.config.update({
-            accessKeyId: configService.get("ACCESS_KEY_ID"),
-            secretAccessKey: configService.get("SECRET_ACCESS_KEY"),
-            region: configService.get("DYNAMO_REGION"),
-        });
-        this.documentClient = new DocumentClientV2(new AWS.DynamoDB.DocumentClient());
+        this.documentClient = new DocumentClientV2(
+            new AWS.DynamoDB.DocumentClient({
+                credentials: {
+                    accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
+                    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
+                },
+                region: process.env.AWS_DYNAMO_REGION || "",
+            }),
+        );
 
         createConnection({
+            name: this.USER_CONN,
             table: userTable,
             entities: [User],
             documentClient: this.documentClient, // <-- When documentClient is not provided, TypeDORM defaults to use the DocumentClientV2
         });
+
+        this.entityManager = getEntityManager(this.USER_CONN);
     }
 
     async createUser(user: User): Promise<void> {
-        const entityManager: EntityManager = getEntityManager();
-        const found_user = await entityManager.findOne(User, { email: user.email });
+        const found_user = await this.entityManager.findOne(User, { email: user.email });
         if (found_user) {
             throw new BadRequestException("User email already exists");
         }
-        await entityManager.create(user);
+        await this.entityManager.create(user);
     }
 
     async getUser(email: string): Promise<User> {
-        const entityManager: EntityManager = getEntityManager();
-        const found_user = await entityManager.findOne(User, email);
+        const found_user = await this.entityManager.findOne(User, email);
         if (!found_user) {
             throw new BadRequestException("User email does not exist");
         }
@@ -46,13 +50,11 @@ export class UserRepository {
     }
 
     async updateUser(newUser: User): Promise<void> {
-        console.log(newUser);
-        const entityManager: EntityManager = getEntityManager();
-        const found_user = await entityManager.findOne(User, { email: newUser.email });
+        const found_user = await this.entityManager.findOne(User, { email: newUser.email });
         if (!found_user) {
             throw new BadRequestException("User email does not exist");
         }
         const { email, ...userDetails } = newUser;
-        entityManager.update(User, { email }, plainToClass(User, userDetails));
+        this.entityManager.update(User, { email }, plainToClass(User, userDetails));
     }
 }
