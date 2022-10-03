@@ -5,7 +5,7 @@ import { OrganizationModule } from './organization/organization.module';
 
 @Module({
   imports: [UserModule, OrganizationModule],
-  controllers: [OrganizationController],
+  controllers: [],
   providers: [],
 })
 export class AppModule {}
