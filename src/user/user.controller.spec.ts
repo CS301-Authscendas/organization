@@ -4,7 +4,7 @@ import { UserRepository } from './user.repository';
 import { UserService } from './user.service';
 
 describe('AppController', () => {
-  let appController: UserController;
+  let userController: UserController;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
@@ -12,12 +12,12 @@ describe('AppController', () => {
       providers: [UserService, UserRepository],
     }).compile();
 
-    appController = app.get<UserController>(UserController);
+    userController = app.get<UserController>(UserController);
   });
 
   describe('root', () => {
     it('should return "Organization service is working!"', () => {
-      expect(appController.getHello()).toBe('Organization service is working!');
+      expect(userController.getHealth()).toBe('Organization service is working!');
     });
   });
 });
