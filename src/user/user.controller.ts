@@ -12,7 +12,6 @@ export class UserController {
         return this.userService.getHello();
     }
 
-    // @UseInterceptors()
     @Post()
     async postUser(@Body() user: User) {
         console.log(user);

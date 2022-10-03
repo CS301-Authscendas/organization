@@ -1,4 +1,4 @@
 export interface I2FAToken {
-    expiry: Date
-    token: string
+    expiry: Date;
+    token: string;
 }
