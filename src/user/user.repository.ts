@@ -1,17 +1,14 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
-import * as AWS from "aws-sdk";
-import dbConfig from "../app.config";
 import { ConfigService } from "@nestjs/config";
-import { createConnection } from "@typedorm/core";
+import { createConnection, EntityManager, getEntityManager } from "@typedorm/core";
 import { DocumentClientV2 } from "@typedorm/document-client";
-import { userTable } from "./user.table";
-import { User } from "./user.entity";
+import * as AWS from "aws-sdk";
 import { plainToClass } from "class-transformer";
-import { getEntityManager, EntityManager } from "@typedorm/core";
+import { User } from "./user.entity";
+import { userTable } from "./user.table";
 
 @Injectable()
 export class UserRepository {
-    private tableName: string;
     private documentClient: DocumentClientV2;
 
     constructor() {
@@ -21,7 +18,6 @@ export class UserRepository {
             secretAccessKey: configService.get("SECRET_ACCESS_KEY"),
             region: configService.get("DYNAMO_REGION"),
         });
-        this.tableName = "organization";
         this.documentClient = new DocumentClientV2(new AWS.DynamoDB.DocumentClient());
 
         createConnection({
