@@ -32,7 +32,7 @@ jobs:
     name: Deploy to ECR
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref_name == 'master'
+    if: github.ref_name == 'main'
     steps:
       - name: Check out code
         uses: actions/checkout@v2
