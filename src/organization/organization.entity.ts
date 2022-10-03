@@ -1,47 +1,33 @@
 import { Attribute, AutoGenerateAttribute, AUTO_GENERATE_ATTRIBUTE_STRATEGY, Entity } from "@typedorm/common";
-import { IsEmail, IsEnum, IsNotEmpty } from "class-validator";
-import { I2FAToken } from "./user.interface";
+import { IsArray, IsEnum } from "class-validator";
 
-enum status_enum {
-    PENDING = "PENDING",
-    APPROVED = "APPROVED",
+enum authMethod_enum {
+    HOSTED = "HOSTED",
+    BANK_SSO = "BANK_SSO",
 }
 
 @Entity({
-    name: "user",
+    name: "organization",
     primaryKey: {
-        partitionKey: "{{email}}",
+        partitionKey: "{{id}}",
     },
 })
-export class User {
+export class Organization {
     @AutoGenerateAttribute({
         strategy: AUTO_GENERATE_ATTRIBUTE_STRATEGY.UUID4,
     })
     id: string;
 
     @Attribute()
-    @IsNotEmpty()
-    organizationId: string[];
+    name: string;
 
     @Attribute()
-    @IsEmail()
-    email: string;
+    jwkToken: string;
 
     @Attribute()
-    firstName: string;
-
-    @Attribute()
-    lastName: string;
-
-    @Attribute()
-    @IsEnum(status_enum)
-    status: string;
-
-    @Attribute()
-    birthDate: Date;
-
-    @Attribute()
-    twoFAToken: I2FAToken;
+    @IsArray()
+    @IsEnum(authMethod_enum)
+    authMethod: string[];
 
     @AutoGenerateAttribute({
         strategy: AUTO_GENERATE_ATTRIBUTE_STRATEGY.EPOCH_DATE,
