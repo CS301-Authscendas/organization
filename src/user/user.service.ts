@@ -6,10 +6,6 @@ import { User } from "./user.entity";
 export class UserService {
     constructor(private readonly userRepository: UserRepository) {}
 
-    async retrieveData(): Promise<void> {
-      
-    }
-
     async createUser(user: User): Promise<void> {
         return await this.userRepository.createUser(user);
     }
