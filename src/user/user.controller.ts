@@ -12,7 +12,7 @@ export class UserController {
     }
 
     @Get()
-    async getUser(@Query() email: string): Promise<User> {
+    async getUser(@Query("email") email: string): Promise<User> {
         return this.userService.getUser(email);
     }
 

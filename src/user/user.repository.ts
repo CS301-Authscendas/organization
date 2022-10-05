@@ -42,7 +42,7 @@ export class UserRepository {
     }
 
     async getUser(email: string): Promise<User> {
-        const found_user = await this.entityManager.findOne(User, email);
+        const found_user = await this.entityManager.findOne(User, { email: email });
         if (!found_user) {
             throw new BadRequestException("User email does not exist");
         }
