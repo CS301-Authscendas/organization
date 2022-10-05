@@ -1,7 +1,6 @@
-import { Body, Controller, Get, Patch, Post, Put, Query, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Get, Post, Put, Query } from "@nestjs/common";
 import { User } from "./user.entity";
 import { UserService } from "./user.service";
-import { plainToClass } from "class-transformer";
 
 @Controller("/user")
 export class UserController {

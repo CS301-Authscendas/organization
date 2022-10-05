@@ -1,7 +1,8 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { createConnection, EntityManager, getEntityManager } from "@typedorm/core";
 import { DocumentClientV2 } from "@typedorm/document-client";
 import * as AWS from "aws-sdk";
+import { plainToClass } from "class-transformer";
 import { Organization } from "./organization.entity";
 import { organizationTable } from "./organization.table";
 
@@ -33,6 +34,28 @@ export class OrganizationRepository {
     }
 
     async createOrganization(org: Organization): Promise<void> {
+        const found_org = await this.entityManager.findOne(Organization, { id: org.id });
+        if (found_org) {
+            throw new BadRequestException("Organization with id already exists");
+        }
         await this.entityManager.create(org);
+    }
+
+    async queryById(id: string): Promise<Organization> {
+        // return await null;
+        const found_org = await this.entityManager.findOne(Organization, { id: id });
+        if (!found_org) {
+            throw new BadRequestException("Organization name does not exist");
+        }
+        return found_org;
+    }
+
+    async updateOrganization(newOrg: Organization): Promise<void> {
+        const found_org = await this.entityManager.findOne(Organization, { id: newOrg.id });
+        if (!found_org) {
+            throw new BadRequestException("Organization with id does not exist");
+        }
+        const { id, ...orgDetails } = newOrg;
+        this.entityManager.update(Organization, { id }, plainToClass(Organization, orgDetails));
     }
 }

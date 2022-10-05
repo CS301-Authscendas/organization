@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post, Put, Query } from "@nestjs/common";
 import { Organization } from "./organization.entity";
 import { OrganizationService } from "./organization.service";
 
@@ -7,7 +7,17 @@ export class OrganizationController {
     constructor(private readonly organizationService: OrganizationService) {}
 
     @Post()
-    async postUser(@Body() organization: Organization) {
+    async postOrganization(@Body() organization: Organization) {
         return await this.organizationService.createOrganization(organization);
+    }
+
+    @Get()
+    async getOrganization(@Query("id") id: string) {
+        return await this.organizationService.getOrganization(id);
+    }
+
+    @Put()
+    async putOrganization(@Body() organization: Organization) {
+        return await this.organizationService.updateOrganization(organization);
     }
 }

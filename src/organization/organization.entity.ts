@@ -1,10 +1,5 @@
 import { Attribute, AutoGenerateAttribute, AUTO_GENERATE_ATTRIBUTE_STRATEGY, Entity } from "@typedorm/common";
-import { IsArray, IsEnum } from "class-validator";
-
-enum authMethod_enum {
-    HOSTED = "HOSTED",
-    BANK_SSO = "BANK_SSO",
-}
+import { IsArray } from "class-validator";
 
 @Entity({
     name: "organization",
@@ -13,9 +8,7 @@ enum authMethod_enum {
     },
 })
 export class Organization {
-    @AutoGenerateAttribute({
-        strategy: AUTO_GENERATE_ATTRIBUTE_STRATEGY.UUID4,
-    })
+    @Attribute()
     id: string;
 
     @Attribute()
@@ -26,7 +19,6 @@ export class Organization {
 
     @Attribute()
     @IsArray()
-    @IsEnum(authMethod_enum)
     authMethod: string[];
 
     @AutoGenerateAttribute({

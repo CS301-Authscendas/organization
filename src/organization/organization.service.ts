@@ -9,4 +9,12 @@ export class OrganizationService {
     async createOrganization(organization: Organization): Promise<void> {
         return await this.organizationRepository.createOrganization(organization);
     }
+
+    async getOrganization(id: string): Promise<Organization> {
+        return await this.organizationRepository.queryById(id);
+    }
+
+    async updateOrganization(organization: Organization): Promise<void> {
+        return await this.organizationRepository.updateOrganization(organization);
+    }
 }
