@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { UserRepository } from "./user.repository";
 import { User } from "./user.entity";
+import { UserRepository } from "./user.repository";
 
 @Injectable()
 export class UserService {
@@ -16,5 +16,9 @@ export class UserService {
 
     async updateUser(newUser: User): Promise<void> {
         return await this.userRepository.updateUser(newUser);
+    }
+
+    async deleteUser(email: string): Promise<void> {
+        return await this.userRepository.deleteUser(email);
     }
 }
