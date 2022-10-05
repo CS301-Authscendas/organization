@@ -17,4 +17,8 @@ export class OrganizationService {
     async updateOrganization(organization: Organization): Promise<void> {
         return await this.organizationRepository.updateOrganization(organization);
     }
+
+    async deleteOrganization(id: string): Promise<void> {
+        return await this.organizationRepository.deleteOrganization(id);
+    }
 }

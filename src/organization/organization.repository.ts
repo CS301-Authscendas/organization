@@ -58,4 +58,12 @@ export class OrganizationRepository {
         const { id, ...orgDetails } = newOrg;
         this.entityManager.update(Organization, { id }, plainToClass(Organization, orgDetails));
     }
+
+    async deleteOrganization(id: string): Promise<void> {
+        const found_org = await this.entityManager.findOne(Organization, { id: id });
+        if (!found_org) {
+            throw new BadRequestException("Organization with id does not exist");
+        }
+        this.entityManager.delete(Organization, { id: id });
+    }
 }

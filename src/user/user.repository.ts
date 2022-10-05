@@ -64,6 +64,5 @@ export class UserRepository {
             throw new BadRequestException("User email does not exist");
         }
         this.entityManager.delete(User, { email: email });
-        // return found_user;
     }
 }
