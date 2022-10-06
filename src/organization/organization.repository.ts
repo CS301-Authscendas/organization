@@ -36,7 +36,8 @@ export class OrganizationRepository {
     async createOrganization(org: Organization): Promise<void> {
         const found_org = await this.entityManager.findOne(Organization, { id: org.id });
         if (found_org) {
-            throw new BadRequestException("Organization with id: ".concat(org.id, " already exists"));
+            // throw new BadRequestException("Organization with id: ".concat(org.id, " already exists"));
+            throw new BadRequestException(`Organization with id: ${org.id} already exists`);
         }
         await this.entityManager.create(org);
     }
@@ -45,7 +46,7 @@ export class OrganizationRepository {
         // return await null;
         const found_org = await this.entityManager.findOne(Organization, { id: id });
         if (!found_org) {
-            throw new BadRequestException("Organization with id: ".concat(id, " does not exist"));
+            throw new BadRequestException(`Organization with id: ${id} does not exist`);
         }
         return found_org;
     }
@@ -53,7 +54,7 @@ export class OrganizationRepository {
     async updateOrganization(newOrg: Organization): Promise<void> {
         const found_org = await this.entityManager.findOne(Organization, { id: newOrg.id });
         if (!found_org) {
-            throw new BadRequestException("Organization with id: ".concat(newOrg.id, " does not exist"));
+            throw new BadRequestException(`Organization with id: ${newOrg.id} does not exist`);
         }
         const { id, ...orgDetails } = newOrg;
         await this.entityManager.update(Organization, { id }, plainToClass(Organization, orgDetails));
@@ -62,7 +63,7 @@ export class OrganizationRepository {
     async deleteOrganization(id: string): Promise<void> {
         const found_org = await this.entityManager.findOne(Organization, { id: id });
         if (!found_org) {
-            throw new BadRequestException("Organization with id: ".concat(id, " does not exist"));
+            throw new BadRequestException(`Organization with id: ${id} does not exist`);
         }
         await this.entityManager.delete(Organization, { id: id });
     }
