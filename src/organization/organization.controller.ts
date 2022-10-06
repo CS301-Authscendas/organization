@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { Organization } from "./organization.entity";
 import { OrganizationService } from "./organization.service";
 
@@ -21,8 +21,8 @@ export class OrganizationController {
         return await this.organizationService.updateOrganization(organization);
     }
 
-    @Delete()
-    async deleteOrganization(@Query("id") id: string) {
+    @Delete(":id")
+    async deleteOrganization(@Param("id") id: string) {
         return await this.organizationService.deleteOrganization(id);
     }
 }
