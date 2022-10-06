@@ -36,7 +36,7 @@ export class UserRepository {
     async createUser(user: User): Promise<void> {
         const found_user = await this.entityManager.findOne(User, { email: user.email });
         if (found_user) {
-            throw new BadRequestException("User email already exists");
+            throw new BadRequestException(`User with email: ${user.email} already exists`);
         }
         await this.entityManager.create(user);
     }
@@ -44,7 +44,7 @@ export class UserRepository {
     async getUser(email: string): Promise<User> {
         const found_user = await this.entityManager.findOne(User, { email: email });
         if (!found_user) {
-            throw new BadRequestException("User email does not exist");
+            throw new BadRequestException(`User with email: ${email} does not exist`);
         }
         return found_user;
     }
@@ -52,9 +52,17 @@ export class UserRepository {
     async updateUser(newUser: User): Promise<void> {
         const found_user = await this.entityManager.findOne(User, { email: newUser.email });
         if (!found_user) {
-            throw new BadRequestException("User email does not exist");
+            throw new BadRequestException(`User with email: ${newUser.email} does not exist`);
         }
         const { email, ...userDetails } = newUser;
-        this.entityManager.update(User, { email }, plainToClass(User, userDetails));
+        await this.entityManager.update(User, { email }, plainToClass(User, userDetails));
+    }
+
+    async deleteUser(email: string): Promise<void> {
+        const found_user = await this.entityManager.findOne(User, { email: email });
+        if (!found_user) {
+            throw new BadRequestException(`User with email: ${email} does not exist`);
+        }
+        await this.entityManager.delete(User, { email: email });
     }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { Organization } from "./organization.entity";
 import { OrganizationService } from "./organization.service";
 
@@ -8,7 +8,7 @@ export class OrganizationController {
 
     @Post()
     async postOrganization(@Body() organization: Organization) {
-        return await this.organizationService.createOrganization(organization);
+        await this.organizationService.createOrganization(organization);
     }
 
     @Get()
@@ -18,6 +18,11 @@ export class OrganizationController {
 
     @Put()
     async putOrganization(@Body() organization: Organization) {
-        return await this.organizationService.updateOrganization(organization);
+        await this.organizationService.updateOrganization(organization);
+    }
+
+    @Delete(":id")
+    async deleteOrganization(@Param("id") id: string) {
+        await this.organizationService.deleteOrganization(id);
     }
 }
