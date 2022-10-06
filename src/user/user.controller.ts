@@ -13,21 +13,21 @@ export class UserController {
 
     @Get()
     async getUser(@Query("email") email: string): Promise<User> {
-        return this.userService.getUser(email);
+        return await this.userService.getUser(email);
     }
 
     @Post()
     async postUser(@Body() user: User) {
-        return await this.userService.createUser(user);
+        await this.userService.createUser(user);
     }
 
     @Put()
     async putUser(@Body() user: User) {
-        return await this.userService.updateUser(user);
+        await this.userService.updateUser(user);
     }
 
     @Delete(":email")
     async deleteUser(@Param("email") email: string): Promise<void> {
-        return await this.userService.deleteUser(email);
+        await this.userService.deleteUser(email);
     }
 }

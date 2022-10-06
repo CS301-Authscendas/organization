@@ -7,7 +7,7 @@ export class OrganizationService {
     constructor(private readonly organizationRepository: OrganizationRepository) {}
 
     async createOrganization(organization: Organization): Promise<void> {
-        return await this.organizationRepository.createOrganization(organization);
+        await this.organizationRepository.createOrganization(organization);
     }
 
     async getOrganization(id: string): Promise<Organization> {
@@ -15,10 +15,10 @@ export class OrganizationService {
     }
 
     async updateOrganization(organization: Organization): Promise<void> {
-        return await this.organizationRepository.updateOrganization(organization);
+        await this.organizationRepository.updateOrganization(organization);
     }
 
     async deleteOrganization(id: string): Promise<void> {
-        return await this.organizationRepository.deleteOrganization(id);
+        await this.organizationRepository.deleteOrganization(id);
     }
 }
