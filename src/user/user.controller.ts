@@ -30,4 +30,10 @@ export class UserController {
     async deleteUser(@Param("email") email: string): Promise<void> {
         await this.userService.deleteUser(email);
     }
+
+    // @EventPattern()
+    // async handleSendMessageEvenet(data: Record<string, unknown>) {
+    //     // TODO: Implement handler function.
+    //     // console.log(data);
+    // }
 }
