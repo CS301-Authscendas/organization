@@ -26,6 +26,9 @@ export class User {
     @IsEmail()
     email: string;
 
+    @IsString()
+    password: string;
+
     @Attribute()
     firstName: string;
 
@@ -40,8 +43,7 @@ export class User {
     birthDate: Date;
 
     @Attribute()
-    @IsString()
-    twoFATokenSecret: string;
+    twoFATokenSecret: string | null;
 
     @AutoGenerateAttribute({
         strategy: AUTO_GENERATE_ATTRIBUTE_STRATEGY.EPOCH_DATE,

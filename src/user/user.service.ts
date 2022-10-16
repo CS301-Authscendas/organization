@@ -26,7 +26,7 @@ export class UserService {
 
     async clear2FASecret(email: string): Promise<void> {
         const user = await this.userRepository.getUser(email);
-        user.twoFATokenSecret = "";
+        user.twoFATokenSecret = null;
         await this.userRepository.updateUser(user);
     }
 
