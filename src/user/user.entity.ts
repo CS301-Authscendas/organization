@@ -46,6 +46,7 @@ export class User {
     twoFATokenSecret: string | null;
 
     @Attribute()
+    @IsString()
     @IsPhoneNumber("SG")
     phoneNumber: string;
 
