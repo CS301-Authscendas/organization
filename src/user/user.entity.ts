@@ -1,5 +1,5 @@
 import { Attribute, AutoGenerateAttribute, AUTO_GENERATE_ATTRIBUTE_STRATEGY, Entity } from "@typedorm/common";
-import { IsEmail, IsEnum, IsNotEmpty, IsString } from "class-validator";
+import { IsEmail, IsEnum, IsNotEmpty, IsPhoneNumber, IsString } from "class-validator";
 
 export enum status_enum {
     PENDING = "PENDING",
@@ -44,6 +44,10 @@ export class User {
 
     @Attribute()
     twoFATokenSecret: string | null;
+
+    @Attribute()
+    @IsPhoneNumber("SG")
+    phoneNumber: string;
 
     @AutoGenerateAttribute({
         strategy: AUTO_GENERATE_ATTRIBUTE_STRATEGY.EPOCH_DATE,

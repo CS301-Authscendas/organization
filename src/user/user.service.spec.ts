@@ -46,6 +46,7 @@ describe("UserService", () => {
                 password: "asdf1234",
                 status: status_enum.PENDING,
                 twoFATokenSecret: "1234",
+                phoneNumber: "91234567",
                 updatedAt: new Date().getTime(),
             };
             jest.spyOn(userRepository, "getUser").mockImplementation(() => Promise.resolve(user));
@@ -86,6 +87,7 @@ describe("UserService", () => {
             password: "asdf1234",
             status: status_enum.PENDING,
             twoFATokenSecret: "1234",
+            phoneNumber: "91234567",
             updatedAt: new Date().getTime(),
         };
 
