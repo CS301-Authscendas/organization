@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
+import { MessagePattern } from "@nestjs/microservices";
 import { User } from "./user.entity";
 import { UserService } from "./user.service";
 
@@ -31,9 +32,21 @@ export class UserController {
         await this.userService.deleteUser(email);
     }
 
-    // @EventPattern()
-    // async handleSendMessageEvenet(data: Record<string, unknown>) {
-    //     // TODO: Implement handler function.
-    //     // console.log(data);
+    @MessagePattern("clear-2FA-secret")
+    async clear2FASecret(data: string) {
+        const jsonData = JSON.parse(data);
+        const email = jsonData.email;
+        // console.log("EMAIL: ", email);
+        return this.userService.clear2FASecret(email);
+    }
+
+    // @Get("test")
+    // testSendMessage(): Promise<void> {
+    //     return this.userService.testSendMessage();
     // }
+
+    @Get("test-clear-string")
+    async testClear2FA(): Promise<void> {
+        return this.userService.clear2FASecret("tester@gmail.com");
+    }
 }
