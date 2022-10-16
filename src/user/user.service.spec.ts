@@ -53,6 +53,28 @@ describe("UserService", () => {
         });
     });
 
+    // describe("get user that does not exist", () => {
+    //     it("should not return a user", async () => {
+    //         const user: User = {
+    //             id: "",
+    //             birthDate: new Date(),
+    //             email: "test@gmail.com",
+    //             firstName: "Bobby",
+    //             lastName: "Lim",
+    //             organizationId: ["grab"],
+    //             password: "asdf1234",
+    //             status: status_enum.PENDING,
+    //             twoFATokenSecret: "1234",
+    //             updatedAt: new Date().getTime(),
+    //         };
+    //         // const exception = new BadRequestException(`User with email: ${user.email} does not exist`);
+    //         const error = `User with email: ${user.email} does not exist`;
+    //         jest.spyOn(userRepository, "getUser").mockImplementation(() => Promise.reject(error));
+    //         expect(userService.getUser(user.email)).rejects.toThrow(error);
+    //         expect(await userService.getUser(user.email)).toBeCalled();
+    //     });
+    // });
+
     describe("create user", () => {
         const user: User = {
             id: "",
@@ -74,25 +96,5 @@ describe("UserService", () => {
         it("should call UserRepository", () => {
             expect(userRepository.createUser).toBeCalledWith(user);
         });
-
-        // jest.spyOn(userRepository, )
     });
-
-    // describe("create execution", () => {
-    //     const execution: Execution = {
-    //         id: "",
-    //         price: 25,
-    //         quantity: 100,
-    //         symbol: "AAPL",
-    //         timestamp: new Date().getTime(),
-    //     };
-
-    //     beforeEach(async () => {
-    //         await userService.createExecution(execution);
-    //     });
-
-    //     it("should call AppRepository", () => {
-    //         expect(userRepository.createExecution).toBeCalledWith(execution);
-    //     });
-    // });
 });
