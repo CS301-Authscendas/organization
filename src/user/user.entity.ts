@@ -1,7 +1,7 @@
 import { Attribute, AutoGenerateAttribute, AUTO_GENERATE_ATTRIBUTE_STRATEGY, Entity } from "@typedorm/common";
 import { IsEmail, IsEnum, IsNotEmpty, IsString } from "class-validator";
 
-enum status_enum {
+export enum status_enum {
     PENDING = "PENDING",
     APPROVED = "APPROVED",
 }
