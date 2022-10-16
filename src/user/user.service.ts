@@ -33,7 +33,10 @@ export class UserService {
         user.twoFATokenSecret = "";
         await this.userRepository.updateUser(user);
     }
-    // async testSendUser(user: User) Promise<void> {
-    //     await this.client.send("")
-    // }
+
+    async set2FASecret(email: string, secret: string): Promise<void> {
+        const user = await this.userRepository.getUser(email);
+        user.twoFATokenSecret = secret;
+        await this.userRepository.updateUser(user);
+    }
 }

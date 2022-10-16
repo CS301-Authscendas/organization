@@ -6,3 +6,8 @@ export interface I2FAToken {
 export interface emailDTO {
     email: string;
 }
+
+export interface set2FASecretDTO {
+    email: string;
+    secret: string;
+}

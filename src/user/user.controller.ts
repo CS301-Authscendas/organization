@@ -1,13 +1,14 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
-import { MessagePattern } from "@nestjs/microservices";
+import { Ctx, MessagePattern, Payload, RmqContext } from "@nestjs/microservices";
 import { User } from "./user.entity";
+import { set2FASecretDTO } from "./user.interface";
 import { UserService } from "./user.service";
 
-@Controller("/user")
+@Controller()
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
-    @Get("/health")
+    @Get("/healthcheck")
     getHealth() {
         return "Organization service is working!";
     }
@@ -40,10 +41,14 @@ export class UserController {
         return this.userService.clear2FASecret(email);
     }
 
-    // @Get("test")
-    // testSendMessage(): Promise<void> {
-    //     return this.userService.testSendMessage();
-    // }
+    @MessagePattern("set-2FA-secret")
+    async save2FASecret(@Payload() data: set2FASecretDTO, @Ctx() context: RmqContext) {
+        await this.userService.set2FASecret(data.email, data.secret);
+
+        const channel = context.getChannelRef();
+        const originalMsg = context.getMessage();
+        channel.ack(originalMsg);
+    }
 
     @Get("test-clear-string")
     async testClear2FA(): Promise<void> {
