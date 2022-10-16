@@ -24,10 +24,6 @@ export class UserService {
         await this.userRepository.deleteUser(email);
     }
 
-    // async testSendMessage(): Promise<void> {
-    //     await this.client.send("Test-event", JSON.stringify({ message: "Hello its me daryl" })).subscribe();
-    // }
-
     async clear2FASecret(email: string): Promise<void> {
         const user = await this.userRepository.getUser(email);
         user.twoFATokenSecret = "";
