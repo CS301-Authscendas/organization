@@ -16,8 +16,8 @@ export class UserService {
         return await this.userRepository.getUser(email);
     }
 
-    async updateUser(newUser: User): Promise<void> {
-        await this.userRepository.updateUser(newUser);
+    async updateUser(newUser: User): Promise<boolean> {
+        return await this.userRepository.updateUser(newUser);
     }
 
     async deleteUser(email: string): Promise<void> {

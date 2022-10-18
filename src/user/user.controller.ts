@@ -24,8 +24,8 @@ export class UserController {
     }
 
     @Put()
-    async putUser(@Body() user: User) {
-        await this.userService.updateUser(user);
+    async putUser(@Body() user: User): Promise<boolean> {
+        return await this.userService.updateUser(user);
     }
 
     @Delete(":email")

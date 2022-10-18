@@ -49,13 +49,14 @@ export class UserRepository {
         return found_user;
     }
 
-    async updateUser(newUser: User): Promise<void> {
+    async updateUser(newUser: User): Promise<boolean> {
         const found_user = await this.entityManager.findOne(User, { email: newUser.email });
         if (!found_user) {
             throw new BadRequestException(`User with email: ${newUser.email} does not exist`);
         }
         const { email, ...userDetails } = newUser;
         await this.entityManager.update(User, { email }, plainToClass(User, userDetails));
+        return true;
     }
 
     async deleteUser(email: string): Promise<void> {
