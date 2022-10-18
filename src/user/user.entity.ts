@@ -58,7 +58,7 @@ export class User {
     @Attribute()
     @IsString()
     @IsPhoneNumber("SG")
-    phoneNumber: string;
+    phoneNumber: string | null;
 
     @AutoGenerateAttribute({
         strategy: AUTO_GENERATE_ATTRIBUTE_STRATEGY.EPOCH_DATE,
