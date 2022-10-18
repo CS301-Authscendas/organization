@@ -1,7 +1,8 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { S3 } from "aws-sdk";
 import xlsx from "node-xlsx";
 import { IS3File } from "./s3.interface";
+import { Cron } from "@nestjs/schedule";
 
 @Injectable()
 export class S3Service {
@@ -20,5 +21,11 @@ export class S3Service {
         const workbook = xlsx.parse(stream.Body)[0];
 
         return workbook;
+    }
+
+    @Cron("*/5 * * * * *")
+    handleCron() {
+        // console.log("5 seconds has passed");
+        Logger.log("hallo, 5s pass");
     }
 }

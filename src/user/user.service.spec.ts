@@ -1,5 +1,5 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { status_enum, User } from "./user.entity";
+import { STATUS, User } from "./user.entity";
 import { UserRepository } from "./user.repository";
 import { UserService } from "./user.service";
 
@@ -44,10 +44,11 @@ describe("UserService", () => {
                 lastName: "Lim",
                 organizationId: ["grab"],
                 password: "asdf1234",
-                status: status_enum.PENDING,
+                status: STATUS.PENDING,
                 twoFATokenSecret: "1234",
                 phoneNumber: "91234567",
                 updatedAt: new Date().getTime(),
+                role: "USER",
             };
             jest.spyOn(userRepository, "getUser").mockImplementation(() => Promise.resolve(user));
             expect(await userService.getUser(user.email)).toBe(user);
@@ -85,10 +86,11 @@ describe("UserService", () => {
             lastName: "Lim",
             organizationId: ["grab"],
             password: "asdf1234",
-            status: status_enum.PENDING,
+            status: STATUS.PENDING,
             twoFATokenSecret: "1234",
             phoneNumber: "91234567",
             updatedAt: new Date().getTime(),
+            role: "USER",
         };
 
         beforeEach(async () => {

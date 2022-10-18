@@ -1,9 +1,15 @@
 import { Attribute, AutoGenerateAttribute, AUTO_GENERATE_ATTRIBUTE_STRATEGY, Entity } from "@typedorm/common";
 import { IsEmail, IsEnum, IsNotEmpty, IsPhoneNumber, IsString } from "class-validator";
 
-export enum status_enum {
+export enum STATUS {
     PENDING = "PENDING",
     APPROVED = "APPROVED",
+}
+
+export enum ROLES {
+    ADMIN = "ADMIN",
+    OWNER = "OWNER",
+    USER = "USER",
 }
 
 @Entity({
@@ -36,7 +42,7 @@ export class User {
     lastName: string;
 
     @Attribute()
-    @IsEnum(status_enum)
+    @IsEnum(STATUS)
     status: string;
 
     @Attribute()
@@ -44,6 +50,10 @@ export class User {
 
     @Attribute()
     twoFATokenSecret: string | null;
+
+    @Attribute()
+    @IsEnum(ROLES)
+    role: string;
 
     @Attribute()
     @IsString()
