@@ -1,4 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
+import { OrganizationModule } from "src/organization/organization.module";
+import { UserModule } from "src/user/user.module";
 import { S3Service } from "./s3.service";
 
 describe("S3Service", () => {
@@ -6,6 +8,7 @@ describe("S3Service", () => {
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
+            imports: [UserModule, OrganizationModule],
             providers: [S3Service],
         }).compile();
 
