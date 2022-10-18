@@ -1,8 +1,7 @@
 import { Attribute, AutoGenerateAttribute, AUTO_GENERATE_ATTRIBUTE_STRATEGY, Entity } from "@typedorm/common";
-import { IsEmail, IsEnum, IsNotEmpty } from "class-validator";
-import { I2FAToken } from "./user.interface";
+import { IsEmail, IsEnum, IsNotEmpty, IsPhoneNumber, IsString } from "class-validator";
 
-enum status_enum {
+export enum status_enum {
     PENDING = "PENDING",
     APPROVED = "APPROVED",
 }
@@ -27,6 +26,9 @@ export class User {
     @IsEmail()
     email: string;
 
+    @IsString()
+    password: string;
+
     @Attribute()
     firstName: string;
 
@@ -41,7 +43,12 @@ export class User {
     birthDate: Date;
 
     @Attribute()
-    twoFAToken: I2FAToken;
+    twoFATokenSecret: string | null;
+
+    @Attribute()
+    @IsString()
+    @IsPhoneNumber("SG")
+    phoneNumber: string;
 
     @AutoGenerateAttribute({
         strategy: AUTO_GENERATE_ATTRIBUTE_STRATEGY.EPOCH_DATE,
