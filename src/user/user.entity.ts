@@ -1,5 +1,5 @@
 import { Attribute, AutoGenerateAttribute, AUTO_GENERATE_ATTRIBUTE_STRATEGY, Entity } from "@typedorm/common";
-import { IsEmail, IsEnum, IsNotEmpty, IsPhoneNumber, IsString } from "class-validator";
+import { IsEmail, IsEnum, IsNotEmpty } from "class-validator";
 
 export enum STATUS {
     PENDING = "PENDING",
@@ -32,8 +32,8 @@ export class User {
     @IsEmail()
     email: string;
 
-    @IsString()
-    password: string;
+    @Attribute()
+    password: string | null;
 
     @Attribute()
     firstName: string;
@@ -56,8 +56,8 @@ export class User {
     role: string;
 
     @Attribute()
-    @IsString()
-    @IsPhoneNumber("SG")
+    // @IsString()
+    // @IsPhoneNumber()
     phoneNumber: string | null;
 
     @AutoGenerateAttribute({
