@@ -2,14 +2,14 @@ import { Attribute, AutoGenerateAttribute, AUTO_GENERATE_ATTRIBUTE_STRATEGY, Ent
 import { IsEmail, IsEnum, IsNotEmpty } from "class-validator";
 
 export enum STATUS {
-    PENDING = "PENDING",
-    APPROVED = "APPROVED",
+    PENDING = "pending",
+    APPROVED = "approved",
 }
 
 export enum ROLES {
-    ADMIN = "ADMIN",
-    OWNER = "OWNER",
-    USER = "USER",
+    ADMIN = "admin",
+    OWNER = "owner",
+    USER = "user",
 }
 
 @Entity({

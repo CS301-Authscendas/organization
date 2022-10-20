@@ -3,9 +3,9 @@ import { Cron, CronExpression } from "@nestjs/schedule";
 import { S3 } from "aws-sdk";
 import { plainToClass } from "class-transformer";
 import xlsx from "node-xlsx";
+import { OrganizationService } from "../organization/organization.service";
 import { User } from "../user/user.entity";
 import { UserService } from "../user/user.service";
-import { OrganizationService } from "../organization/organization.service";
 import { IS3File } from "./s3.interface";
 
 interface UserDTO {
@@ -68,7 +68,7 @@ export class S3Service {
                 lastName: user[3],
                 organizationId: ["grab"],
                 status: user[4],
-                role: "USER",
+                role: "user",
             };
             const new_user: User = plainToClass(User, user_DTO);
             Logger.log(new_user);
