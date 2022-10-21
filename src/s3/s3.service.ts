@@ -58,7 +58,7 @@ export class S3Service {
 
     async addUserToDb(user: any) {
         try {
-            await this.userService.getUser(user[1]).then((user) => Logger.log(user));
+            await this.userService.getUser(user[1]);
         } catch (e) {
             const user_DTO: UserDTO = {
                 id: user[0],
