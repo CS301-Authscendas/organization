@@ -21,4 +21,8 @@ export class OrganizationService {
     async deleteOrganization(id: string): Promise<void> {
         await this.organizationRepository.deleteOrganization(id);
     }
+
+    async getAllOrganizations(): Promise<Organization[]> {
+        return await this.organizationRepository.getAllOrganizations();
+    }
 }

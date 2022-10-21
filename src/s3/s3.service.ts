@@ -35,7 +35,7 @@ export class S3Service {
         const stream = await this.s3.getObject(params).promise();
         const workbook = xlsx.parse(stream.Body)[0];
 
-        this.updateDatabase(workbook.data);
+        await this.updateDatabase(workbook.data);
         return workbook;
     }
 
@@ -44,7 +44,7 @@ export class S3Service {
         const stream = await this.s3.getObject(params).promise();
         const workbook = xlsx.parse(stream.Body)[0];
 
-        this.updateDatabase(workbook.data);
+        await this.updateDatabase(workbook.data);
     }
 
     async updateDatabase(data: Array<unknown>) {
@@ -58,7 +58,7 @@ export class S3Service {
 
     async addUserToDb(user: any) {
         try {
-            await this.userService.getUser(user[1]);
+            await this.userService.getUser(user[1]).then((user) => Logger.log(user));
         } catch (e) {
             const user_DTO: UserDTO = {
                 id: user[0],
@@ -76,14 +76,13 @@ export class S3Service {
         }
     }
 
-    @Cron("*/10 * * * * *")
-    tenSecondTimer() {
-        // console.log("5 seconds has passed");
-        Logger.log("hallo, 10s pass");
+    @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+    async syncDatabases() {
+        await this.syncExcelFile("authscendas-excel", "Project A - users.xlsx");
     }
 
-    @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
-    syncDatabases() {
-        this.syncExcelFile("authscendas-excel", "Project A - users.xlsx");
+    async syncAllOrganisation() {
+        const organizations = await this.organizationService.getAllOrganizations();
+        return organizations;
     }
 }

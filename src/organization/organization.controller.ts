@@ -25,4 +25,9 @@ export class OrganizationController {
     async deleteOrganization(@Param("id") id: string) {
         await this.organizationService.deleteOrganization(id);
     }
+
+    @Get("all")
+    async getAll() {
+        return await this.organizationService.getAllOrganizations();
+    }
 }
