@@ -78,7 +78,8 @@ export class S3Service {
 
     @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
     async syncDatabases() {
-        await this.syncExcelFile("authscendas-excel", "Project A - users.xlsx");
+        const bucketName = process.env.AWS_S3_BUCKET_NAME;
+        if (bucketName) await this.syncExcelFile(bucketName, "Project A - users.xlsx");
     }
 
     async syncAllOrganisation() {
