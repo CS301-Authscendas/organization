@@ -9,4 +9,9 @@ export class S3Controller {
     async getFile(@Body() req: any) {
         return await this.s3Service.getExcelFile(req.bucket, req.fileName);
     }
+
+    @Get("test-send")
+    test(): Promise<string> {
+        return this.s3Service.testSendMessage();
+    }
 }

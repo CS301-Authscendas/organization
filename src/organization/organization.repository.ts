@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, Logger } from "@nestjs/common";
 import { createConnection, EntityManager, getEntityManager } from "@typedorm/core";
 import { DocumentClientV2 } from "@typedorm/document-client";
 import * as AWS from "aws-sdk";
@@ -66,5 +66,25 @@ export class OrganizationRepository {
             throw new BadRequestException(`Organization with id: ${id} does not exist`);
         }
         await this.entityManager.delete(Organization, { id: id });
+    }
+
+    async getAllOrganizations(): Promise<Organization[]> {
+        const organizations: Organization[] = [];
+        const params: any = { TableName: "organization" };
+        let resp = await this.documentClient.scan(params);
+        let count = 0;
+        do {
+            resp.Items?.forEach((itemdata: Organization) => {
+                Logger.log("Item :", ++count, JSON.stringify(itemdata));
+                organizations.push(plainToClass(Organization, itemdata));
+            });
+
+            if (typeof resp.LastEvaluatedKey !== "undefined") {
+                Logger.log("Scanning for more...");
+                params.ExclusiveStartKey = resp.LastEvaluatedKey;
+                resp = await this.documentClient.scan(params);
+            }
+        } while (typeof resp.LastEvaluatedKey !== "undefined");
+        return organizations;
     }
 }
