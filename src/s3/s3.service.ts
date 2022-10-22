@@ -1,4 +1,5 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Inject, Injectable, Logger } from "@nestjs/common";
+import { ClientProxy } from "@nestjs/microservices";
 import { Cron, CronExpression } from "@nestjs/schedule";
 import { S3 } from "aws-sdk";
 import { plainToClass } from "class-transformer";
@@ -6,7 +7,7 @@ import xlsx from "node-xlsx";
 import { OrganizationService } from "../organization/organization.service";
 import { User } from "../user/user.entity";
 import { UserService } from "../user/user.service";
-import { IS3File } from "./s3.interface";
+import { IS3File, SeededEmailParamsDTO } from "./s3.interface";
 
 interface UserDTO {
     id: string;
@@ -23,7 +24,11 @@ interface UserDTO {
 export class S3Service {
     private s3: S3;
 
-    constructor(private readonly userService: UserService, private readonly organizationService: OrganizationService) {
+    constructor(
+        private readonly userService: UserService,
+        private readonly organizationService: OrganizationService,
+        @Inject("NOTIFICATION_RMQ_SERVICE") private client: ClientProxy,
+    ) {
         this.s3 = new S3({
             accessKeyId: process.env.AWS_ACCESS_KEY_ID,
             secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -85,5 +90,17 @@ export class S3Service {
     async syncAllOrganisation() {
         const organizations = await this.organizationService.getAllOrganizations();
         return organizations;
+    }
+
+    testSendMessage(): any {
+        this.triggerSeededEmail("Daryl", "test@gmail.com");
+    }
+
+    triggerSeededEmail(name: string, email: string): void {
+        const dataObj: SeededEmailParamsDTO = {
+            name: name,
+            email: email,
+        };
+        this.client.send("send_seeded_email", dataObj).subscribe();
     }
 }
