@@ -59,7 +59,7 @@ export class User {
     status: string;
 
     @Attribute()
-    birthDate: Date;
+    birthDate: string;
 
     @Attribute()
     twoFATokenSecret: string | null;

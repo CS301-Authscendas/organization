@@ -38,7 +38,7 @@ describe("UserService", () => {
         it("should return a user", async () => {
             const user: User = {
                 id: "",
-                birthDate: new Date(),
+                birthDate: "12199",
                 email: "test@gmail.com",
                 firstName: "Bobby",
                 lastName: "Lim",
@@ -80,7 +80,7 @@ describe("UserService", () => {
     describe("create user", () => {
         const user: User = {
             id: "",
-            birthDate: new Date(),
+            birthDate: "12199",
             email: "test@gmail.com",
             firstName: "Bobby",
             lastName: "Lim",
