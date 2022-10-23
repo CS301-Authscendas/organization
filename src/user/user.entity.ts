@@ -1,4 +1,10 @@
-import { Attribute, AutoGenerateAttribute, AUTO_GENERATE_ATTRIBUTE_STRATEGY, Entity } from "@typedorm/common";
+import {
+    Attribute,
+    AutoGenerateAttribute,
+    AUTO_GENERATE_ATTRIBUTE_STRATEGY,
+    Entity,
+    INDEX_TYPE,
+} from "@typedorm/common";
 import { IsEmail, IsEnum, IsNotEmpty } from "class-validator";
 
 export enum STATUS {
@@ -16,6 +22,13 @@ export enum ROLES {
     name: "user",
     primaryKey: {
         partitionKey: "{{email}}",
+    },
+    indexes: {
+        GSI1: {
+            type: INDEX_TYPE.GSI,
+            partitionKey: "{{id}}",
+            sortKey: "",
+        },
     },
 })
 export class User {

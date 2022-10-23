@@ -35,4 +35,12 @@ export class UserService {
         user.twoFATokenSecret = secret;
         await this.userRepository.updateUser(user);
     }
+
+    async getUsersFromOrganization(org_id: string): Promise<User[]> {
+        return await this.userRepository.getUsersFromOrganization(org_id);
+    }
+
+    async getUserById(id: string): Promise<User> {
+        return await this.userRepository.getUserById(id);
+    }
 }

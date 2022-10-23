@@ -1,20 +1,20 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { Ctx, MessagePattern, Payload, RmqContext } from "@nestjs/microservices";
 import { User } from "./user.entity";
 import { emailDTO, set2FASecretDTO } from "./user.interface";
 import { UserService } from "./user.service";
 
-@Controller()
+@Controller("user")
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
-    @Get("/healthcheck")
+    @Get("healthcheck")
     getHealth() {
         return "Organization service is working!";
     }
 
-    @Get()
-    async getUser(@Query("email") email: string): Promise<User> {
+    @Get(":email")
+    async getUser(@Param("email") email: string): Promise<User> {
         return await this.userService.getUser(email);
     }
 
@@ -52,5 +52,15 @@ export class UserController {
     @Get("test-clear-string")
     async testClear2FA(): Promise<void> {
         return this.userService.clear2FASecret("tester@gmail.com");
+    }
+
+    @Get("org/:org_id")
+    async getUsersFromOrganization(@Param("org_id") org_id: string): Promise<User[]> {
+        return await this.userService.getUsersFromOrganization(org_id);
+    }
+
+    @Get("id/:id")
+    async getUserById(@Param("id") id: string): Promise<User> {
+        return await this.userService.getUserById(id);
     }
 }

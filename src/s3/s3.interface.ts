@@ -4,6 +4,7 @@ export interface IS3File {
 }
 
 export interface SeededEmailParamsDTO {
+    id: string;
     name: string;
     email: string;
 }

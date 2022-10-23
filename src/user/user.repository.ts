@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, Logger } from "@nestjs/common";
 import { createConnection, EntityManager, getEntityManager } from "@typedorm/core";
 import { DocumentClientV2 } from "@typedorm/document-client";
 import * as AWS from "aws-sdk";
@@ -65,5 +65,44 @@ export class UserRepository {
             throw new BadRequestException(`User with email: ${email} does not exist`);
         }
         await this.entityManager.delete(User, { email: email });
+    }
+
+    async getUsersFromOrganization(org_id: string): Promise<User[]> {
+        const users: User[] = [];
+        const params: any = { TableName: "user" };
+        let resp = await this.documentClient.scan(params);
+        let count = 0;
+        do {
+            resp.Items?.forEach((itemdata: User) => {
+                Logger.log("Item :", ++count, JSON.stringify(itemdata));
+                if (itemdata.organizationId.includes(org_id)) {
+                    Logger.log("Found user from ", org_id, "...");
+                    Logger.log(itemdata);
+                    users.push(plainToClass(User, itemdata));
+                }
+            });
+
+            if (typeof resp.LastEvaluatedKey !== "undefined") {
+                Logger.log("Scanning for more...");
+                params.ExclusiveStartKey = resp.LastEvaluatedKey;
+                resp = await this.documentClient.scan(params);
+            }
+        } while (typeof resp.LastEvaluatedKey !== "undefined");
+        return users;
+    }
+
+    async getUserById(id: string): Promise<User> {
+        const found_user = await this.entityManager.find(
+            User,
+            { id: id },
+            {
+                queryIndex: "GSI1",
+                limit: 1,
+            },
+        );
+        if (found_user.items.length === 0) {
+            throw new BadRequestException(`User with id: ${id} does not exist`);
+        }
+        return found_user.items[0];
     }
 }
