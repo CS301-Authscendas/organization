@@ -100,8 +100,8 @@ export class UserRepository {
                 limit: 1,
             },
         );
-        if (!found_user) {
-            throw new BadRequestException(`User with email: ${id} does not exist`);
+        if (found_user.items.length === 0) {
+            throw new BadRequestException(`User with id: ${id} does not exist`);
         }
         return found_user.items[0];
     }

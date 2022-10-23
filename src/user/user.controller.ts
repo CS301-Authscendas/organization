@@ -4,11 +4,11 @@ import { User } from "./user.entity";
 import { emailDTO, set2FASecretDTO } from "./user.interface";
 import { UserService } from "./user.service";
 
-@Controller()
+@Controller("user")
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
-    @Get("/healthcheck")
+    @Get("healthcheck")
     getHealth() {
         return "Organization service is working!";
     }
