@@ -93,11 +93,12 @@ export class S3Service {
     }
 
     testSendMessage(): any {
-        this.triggerSeededEmail("Daryl", "authcendas@gmail.com");
+        this.triggerSeededEmail("Daryl", "authcendas@gmail.com", "123123123");
     }
 
-    triggerSeededEmail(name: string, email: string): void {
+    triggerSeededEmail(name: string, email: string, id: string): void {
         const dataObj: SeededEmailParamsDTO = {
+            id: id,
             name: name,
             email: email,
         };
