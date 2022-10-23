@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { Ctx, MessagePattern, Payload, RmqContext } from "@nestjs/microservices";
 import { User } from "./user.entity";
-import { emailDTO, set2FASecretDTO } from "./user.interface";
+import { EmailDTO, Set2FASecretDTO } from "./user.interface";
 import { UserService } from "./user.service";
 
 @Controller("user")
@@ -49,7 +49,7 @@ export class UserController {
     }
 
     @MessagePattern("clear-2FA-secret")
-    async clear2FASecret(@Payload() data: emailDTO, @Ctx() context: RmqContext) {
+    async clear2FASecret(@Payload() data: EmailDTO, @Ctx() context: RmqContext) {
         await this.userService.clear2FASecret(data.email);
         const channel = context.getChannelRef();
         const originalMsg = context.getMessage();
@@ -57,7 +57,7 @@ export class UserController {
     }
 
     @MessagePattern("set-2FA-secret")
-    async save2FASecret(@Payload() data: set2FASecretDTO, @Ctx() context: RmqContext) {
+    async save2FASecret(@Payload() data: Set2FASecretDTO, @Ctx() context: RmqContext) {
         await this.userService.set2FASecret(data.email, data.secret);
         const channel = context.getChannelRef();
         const originalMsg = context.getMessage();

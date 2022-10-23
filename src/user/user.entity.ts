@@ -46,7 +46,7 @@ export class User {
     email: string;
 
     @Attribute()
-    password: string | null;
+    password?: string;
 
     @Attribute()
     firstName: string;
@@ -62,7 +62,7 @@ export class User {
     birthDate: string;
 
     @Attribute()
-    twoFATokenSecret: string | null;
+    twoFATokenSecret?: string;
 
     @Attribute()
     @IsEnum(ROLES)
@@ -71,7 +71,7 @@ export class User {
     @Attribute()
     // @IsString()
     // @IsPhoneNumber()
-    phoneNumber: string | null;
+    phoneNumber?: string;
 
     @AutoGenerateAttribute({
         strategy: AUTO_GENERATE_ATTRIBUTE_STRATEGY.EPOCH_DATE,

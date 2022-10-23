@@ -26,7 +26,7 @@ export class UserService {
 
     async clear2FASecret(email: string): Promise<void> {
         const user = await this.userRepository.getUser(email);
-        user.twoFATokenSecret = null;
+        user.twoFATokenSecret = undefined;
         await this.userRepository.updateUser(user);
     }
 
@@ -41,6 +41,11 @@ export class UserService {
     }
 
     async getUserById(id: string): Promise<User> {
-        return await this.userRepository.getUserById(id);
+        const user = await this.userRepository.getUserById(id);
+        delete user.password;
+        return user;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        // const { password, ...userDetails } = user;
+        // return userDetails;
     }
 }

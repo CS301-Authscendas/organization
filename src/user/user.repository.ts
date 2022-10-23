@@ -46,6 +46,10 @@ export class UserRepository {
         if (!found_user) {
             throw new BadRequestException(`User with email: ${email} does not exist`);
         }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        // const { password, ...userDetails } = found_user;
+
+        delete found_user.password;
         return found_user;
     }
 
@@ -77,7 +81,10 @@ export class UserRepository {
                 Logger.log("Item :", ++count, JSON.stringify(itemdata));
                 if (itemdata.organizationId.includes(org_id)) {
                     Logger.log("Found user from ", org_id, "...");
-                    Logger.log(itemdata);
+                    // Logger.log(itemdata);
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                    // const { password, ...userDetails } = itemdata;
+                    delete itemdata.password;
                     users.push(plainToClass(User, itemdata));
                 }
             });
