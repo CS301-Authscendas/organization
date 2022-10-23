@@ -53,4 +53,9 @@ export class UserController {
     async testClear2FA(): Promise<void> {
         return this.userService.clear2FASecret("tester@gmail.com");
     }
+
+    @Get("org/:org_id")
+    async getUsersFromOrganization(@Param("org_id") org_id: string): Promise<User[]> {
+        return await this.userService.getUsersFromOrganization(org_id);
+    }
 }
