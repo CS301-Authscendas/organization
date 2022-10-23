@@ -11,7 +11,7 @@ export class S3Controller {
     }
 
     @Get("test-send")
-    test(): Promise<string> {
-        return this.s3Service.testSendMessage();
+    async test(): Promise<void> {
+        return await this.s3Service.testSendMessage();
     }
 }

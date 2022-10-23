@@ -92,11 +92,11 @@ export class S3Service {
         return organizations;
     }
 
-    testSendMessage(): any {
-        this.triggerSeededEmail("Daryl", "authcendas@gmail.com", "123123123");
+    async testSendMessage(): Promise<void> {
+        await this.triggerSeededEmail("Daryl", "authcendas@gmail.com", "123123123");
     }
 
-    triggerSeededEmail(name: string, email: string, id: string): void {
+    async triggerSeededEmail(name: string, email: string, id: string): Promise<void> {
         const dataObj: SeededEmailParamsDTO = {
             id: id,
             name: name,
