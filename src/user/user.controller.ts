@@ -18,6 +18,21 @@ export class UserController {
         return await this.userService.getUser(email);
     }
 
+    @Get("test-clear-string")
+    async testClear2FA(): Promise<void> {
+        return this.userService.clear2FASecret("tester@gmail.com");
+    }
+
+    @Get("org/:org_id")
+    async getUsersFromOrganization(@Param("org_id") org_id: string): Promise<User[]> {
+        return await this.userService.getUsersFromOrganization(org_id);
+    }
+
+    @Get("id/:id")
+    async getUserById(@Param("id") id: string): Promise<User> {
+        return await this.userService.getUserById(id);
+    }
+
     @Post()
     async postUser(@Body() user: User) {
         await this.userService.createUser(user);
@@ -47,20 +62,5 @@ export class UserController {
         const channel = context.getChannelRef();
         const originalMsg = context.getMessage();
         channel.ack(originalMsg);
-    }
-
-    @Get("test-clear-string")
-    async testClear2FA(): Promise<void> {
-        return this.userService.clear2FASecret("tester@gmail.com");
-    }
-
-    @Get("org/:org_id")
-    async getUsersFromOrganization(@Param("org_id") org_id: string): Promise<User[]> {
-        return await this.userService.getUsersFromOrganization(org_id);
-    }
-
-    @Get("id/:id")
-    async getUserById(@Param("id") id: string): Promise<User> {
-        return await this.userService.getUserById(id);
     }
 }

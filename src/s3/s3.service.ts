@@ -40,30 +40,31 @@ export class S3Service {
         const stream = await this.s3.getObject(params).promise();
         const workbook = xlsx.parse(stream.Body)[0];
 
-        await this.updateDatabase(workbook.data);
+        await this.updateDatabase(workbook.data, "MyBank");
         return workbook;
     }
 
-    async syncExcelFile(bucket: string, fileName: string) {
+    async syncExcelFile(bucket: string, fileName: string, orgId: string) {
         const params = { Bucket: bucket, Key: fileName };
         const stream = await this.s3.getObject(params).promise();
         const workbook = xlsx.parse(stream.Body)[0];
 
-        await this.updateDatabase(workbook.data);
+        await this.updateDatabase(workbook.data, orgId);
     }
 
-    async updateDatabase(data: Array<unknown>) {
+    async updateDatabase(data: Array<unknown>, orgId: string) {
         const promises = [];
         for (let i = 1; i < data.length; i++) {
             const user: any = data[i];
-            promises.push(this.addUserToDb(user));
+            promises.push(this.addUserToDb(user, orgId));
         }
         await Promise.all(promises);
     }
 
-    async addUserToDb(user: any) {
+    async addUserToDb(user: any, orgId: string) {
+        let found_user = null;
         try {
-            await this.userService.getUser(user[1]);
+            found_user = await this.userService.getUser(user[1]);
         } catch (e) {
             const user_DTO: UserDTO = {
                 id: user[0],
@@ -71,20 +72,25 @@ export class S3Service {
                 email: user[1],
                 firstName: user[2],
                 lastName: user[3],
-                organizationId: ["grab"],
+                organizationId: [orgId],
                 status: user[4],
                 role: "user",
             };
             const new_user: User = plainToClass(User, user_DTO);
-            Logger.log(new_user);
+            Logger.log("Adding new user... ", new_user);
             await this.userService.createUser(new_user);
+        }
+        if (found_user && !found_user.organizationId.includes(orgId)) {
+            found_user.organizationId.push(orgId);
+            Logger.log("Updating user... ", found_user);
+            await this.userService.updateUser(found_user);
         }
     }
 
     @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
     async syncDatabases() {
         const bucketName = process.env.AWS_S3_BUCKET_NAME;
-        if (bucketName) await this.syncExcelFile(bucketName, "Project A - users.xlsx");
+        if (bucketName) await this.syncExcelFile(bucketName, "Project A - users.xlsx", "MyBank");
     }
 
     async syncAllOrganisation() {
