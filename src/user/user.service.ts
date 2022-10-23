@@ -44,8 +44,5 @@ export class UserService {
         const user = await this.userRepository.getUserById(id);
         delete user.password;
         return user;
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        // const { password, ...userDetails } = user;
-        // return userDetails;
     }
 }
