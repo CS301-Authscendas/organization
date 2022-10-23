@@ -93,7 +93,7 @@ export class S3Service {
     }
 
     testSendMessage(): any {
-        this.triggerSeededEmail("Daryl", "test@gmail.com");
+        this.triggerSeededEmail("Daryl", "authcendas@gmail.com");
     }
 
     triggerSeededEmail(name: string, email: string): void {

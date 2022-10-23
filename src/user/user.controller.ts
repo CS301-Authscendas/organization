@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { Ctx, MessagePattern, Payload, RmqContext } from "@nestjs/microservices";
 import { User } from "./user.entity";
 import { emailDTO, set2FASecretDTO } from "./user.interface";
@@ -13,8 +13,8 @@ export class UserController {
         return "Organization service is working!";
     }
 
-    @Get()
-    async getUser(@Query("email") email: string): Promise<User> {
+    @Get(":email")
+    async getUser(@Param("email") email: string): Promise<User> {
         return await this.userService.getUser(email);
     }
 
@@ -57,5 +57,10 @@ export class UserController {
     @Get("org/:org_id")
     async getUsersFromOrganization(@Param("org_id") org_id: string): Promise<User[]> {
         return await this.userService.getUsersFromOrganization(org_id);
+    }
+
+    @Get("id/:id")
+    async getUserById(@Param("id") id: string): Promise<User> {
+        return await this.userService.getUserById(id);
     }
 }

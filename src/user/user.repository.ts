@@ -90,4 +90,19 @@ export class UserRepository {
         } while (typeof resp.LastEvaluatedKey !== "undefined");
         return users;
     }
+
+    async getUserById(id: string): Promise<User> {
+        const found_user = await this.entityManager.find(
+            User,
+            { id: id },
+            {
+                queryIndex: "GSI1",
+                limit: 1,
+            },
+        );
+        if (!found_user) {
+            throw new BadRequestException(`User with email: ${id} does not exist`);
+        }
+        return found_user.items[0];
+    }
 }
