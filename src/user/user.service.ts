@@ -13,6 +13,12 @@ export class UserService {
     }
 
     async getUser(email: string): Promise<User> {
+        const user = await this.userRepository.getUser(email);
+        delete user.password;
+        return user;
+    }
+
+    async getFullUser(email: string): Promise<User> {
         return await this.userRepository.getUser(email);
     }
 

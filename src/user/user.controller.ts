@@ -33,6 +33,11 @@ export class UserController {
         return await this.userService.getUserById(id);
     }
 
+    @Get("full/:email")
+    async getFullUserDetails(@Param("email") email: string) {
+        return await this.userService.getFullUser(email);
+    }
+
     @Post()
     async postUser(@Body() user: User) {
         await this.userService.createUser(user);

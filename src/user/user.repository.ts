@@ -46,7 +46,6 @@ export class UserRepository {
         if (!found_user) {
             throw new BadRequestException(`User with email: ${email} does not exist`);
         }
-        delete found_user.password;
         return found_user;
     }
 
