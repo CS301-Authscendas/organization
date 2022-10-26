@@ -103,11 +103,14 @@ export class S3Service {
         const bucketName = process.env.AWS_S3_BUCKET_NAME;
         if (!bucketName) return;
         const organizations = await this.organizationService.getAllOrganizations();
+        const promises: Promise<void>[] = [];
         organizations.map((organization: Organization) => {
             Logger.log(`Syncing for organization ${organization.id} ...`);
             const fileName = organization.id + ".xlsx";
-            this.syncExcelFile(bucketName, fileName, organization.id);
+            // this.syncExcelFile(bucketName, fileName, organization.id);
+            promises.push(this.syncExcelFile(bucketName, fileName, organization.id));
         });
+        await Promise.all(promises);
     }
 
     async testSendMessage(): Promise<void> {
