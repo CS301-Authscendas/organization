@@ -2,6 +2,10 @@ import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common"
 import { Organization } from "./organization.entity";
 import { OrganizationService } from "./organization.service";
 
+interface getOrgsRequest {
+    ids: string[];
+}
+
 @Controller("organization")
 export class OrganizationController {
     constructor(private readonly organizationService: OrganizationService) {}
@@ -29,5 +33,10 @@ export class OrganizationController {
     @Get()
     async getAll() {
         return await this.organizationService.getAllOrganizations();
+    }
+
+    @Post("fetch-organizations")
+    async fetchOrganizations(@Body() requestBody: getOrgsRequest) {
+        return await this.organizationService.getOrganizationsByList(requestBody.ids);
     }
 }
