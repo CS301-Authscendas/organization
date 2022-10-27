@@ -25,4 +25,13 @@ export class OrganizationService {
     async getAllOrganizations(): Promise<Organization[]> {
         return await this.organizationRepository.getAllOrganizations();
     }
+
+    async getOrganizationsByList(ids: string[]): Promise<Organization[]> {
+        const promises = [];
+        for (let i = 0; i < ids.length; i++) {
+            promises.push(this.organizationRepository.queryById(ids[i]));
+        }
+        const result: Organization[] = await Promise.all(promises);
+        return result;
+    }
 }
