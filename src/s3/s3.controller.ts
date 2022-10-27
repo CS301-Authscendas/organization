@@ -14,4 +14,9 @@ export class S3Controller {
     async test(): Promise<void> {
         return await this.s3Service.testSendMessage();
     }
+
+    @Get("test-sync-all-org")
+    async syncAllOrganizations() {
+        await this.s3Service.syncAllOrganisation();
+    }
 }

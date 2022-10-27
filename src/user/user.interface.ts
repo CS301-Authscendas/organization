@@ -3,11 +3,11 @@ export interface I2FAToken {
     token: string;
 }
 
-export interface emailDTO {
+export interface EmailDTO {
     email: string;
 }
 
-export interface set2FASecretDTO {
+export interface Set2FASecretDTO {
     email: string;
     secret: string;
 }

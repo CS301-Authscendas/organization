@@ -12,6 +12,6 @@ async function bootstrap() {
     app.connectMicroservice(mqService.getOptions("user"));
 
     await app.startAllMicroservices();
-    await app.listen(3000);
+    await app.listen(3002);
 }
 bootstrap();
