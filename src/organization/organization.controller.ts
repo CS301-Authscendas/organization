@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common"
 import { Organization } from "./organization.entity";
 import { OrganizationService } from "./organization.service";
 
-interface getOrgsRequest {
+interface GetOrgsRequest {
     ids: string[];
 }
 
@@ -36,7 +36,7 @@ export class OrganizationController {
     }
 
     @Post("fetch-organizations")
-    async fetchOrganizations(@Body() requestBody: getOrgsRequest) {
+    async fetchOrganizations(@Body() requestBody: GetOrgsRequest) {
         return await this.organizationService.getOrganizationsByList(requestBody.ids);
     }
 }
