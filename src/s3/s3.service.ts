@@ -1,12 +1,13 @@
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
+import { Cron, CronExpression } from "@nestjs/schedule";
 import { S3 } from "aws-sdk";
 import { plainToClass } from "class-transformer";
 import xlsx from "node-xlsx";
 import { Organization } from "src/organization/organization.entity";
 import { OrganizationService } from "../organization/organization.service";
 import { User } from "../user/user.entity";
-import { PERMISSIONS, Role } from "../user/user.interface";
+import { Role, UserScopes } from "../user/user.interface";
 import { UserService } from "../user/user.service";
 import { IS3File, SeededEmailParamsDTO } from "./s3.interface";
 
@@ -81,20 +82,22 @@ export class S3Service {
                 role: [
                     {
                         organizationId: orgId,
-                        permission: PERMISSIONS.USER,
+                        permission: [UserScopes.User],
                     },
                 ],
                 status: user[4],
             };
             const new_user: User = plainToClass(User, user_DTO);
             Logger.log(`Adding new user... ${new_user.email}`);
+            // Comment out to prevent email spam
+            this.triggerSeededEmail(`${new_user.firstName} ${new_user.lastName}`, new_user.email, new_user.id);
             await this.userService.createUser(new_user);
         }
         // User exists in db but is not part or ogranization
         if (found_user && !found_user.roles.some((role) => role.organizationId === orgId)) {
             found_user.roles.push({
                 organizationId: orgId,
-                permission: PERMISSIONS.USER,
+                permission: [UserScopes.User],
             });
             Logger.log(`Updating user... ${found_user.email}`);
             await this.userService.updateUser(found_user);
@@ -107,7 +110,7 @@ export class S3Service {
     //     if (bucketName) await this.syncExcelFile(bucketName, "Project A - users.xlsx", "MyBank");
     // }
 
-    // @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+    @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
     async syncAllOrganisation() {
         const bucketName = process.env.AWS_S3_BUCKET_NAME;
         if (!bucketName) return;
@@ -116,14 +119,13 @@ export class S3Service {
         organizations.map((organization: Organization) => {
             Logger.log(`Syncing for organization ${organization.id} ...`);
             const fileName = organization.id + ".xlsx";
-            // this.syncExcelFile(bucketName, fileName, organization.id);
             promises.push(this.syncExcelFile(bucketName, fileName, organization.id));
         });
         await Promise.all(promises);
     }
 
     async testSendMessage(): Promise<void> {
-        await this.triggerSeededEmail("Bobby Lim", "bobbytest6789@gmail.com", "fbde16b7-8835-40f6-a32a-5684cab88aa7");
+        await this.triggerSeededEmail("Bobby Lim", "bobbytest6789@gmail.com", "a49b0324-7580-4ee5-83e7-872d977a682a");
     }
 
     async triggerSeededEmail(name: string, email: string, id: string): Promise<void> {

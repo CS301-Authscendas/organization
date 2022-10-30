@@ -1,6 +1,7 @@
+import { CacheModule } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import { User } from "./user.entity";
-import { PERMISSIONS, STATUS } from "./user.interface";
+import { STATUS, UserScopes } from "./user.interface";
 import { UserRepository } from "./user.repository";
 import { UserService } from "./user.service";
 
@@ -22,6 +23,7 @@ describe("UserService", () => {
         const app: TestingModule = await Test.createTestingModule({
             controllers: [],
             providers: [UserService, UserRepository],
+            imports: [CacheModule.register()],
         }).compile();
 
         userService = app.get<UserService>(UserService);
@@ -50,7 +52,7 @@ describe("UserService", () => {
                 phoneNumber: "91234567",
                 updatedAt: new Date().getTime(),
                 // role: "USER",
-                roles: [{ organizationId: "MyBank", permission: PERMISSIONS.USER }],
+                roles: [{ organizationId: "MyBank", permission: [UserScopes.User] }],
             };
             jest.spyOn(userRepository, "getUser").mockImplementation(() => Promise.resolve(user));
             expect(await userService.getUser(user.email)).toBe(user);
@@ -93,7 +95,7 @@ describe("UserService", () => {
             phoneNumber: "91234567",
             updatedAt: new Date().getTime(),
             // role: "USER",
-            roles: [{ organizationId: "MyBank", permission: PERMISSIONS.USER }],
+            roles: [{ organizationId: "MyBank", permission: [UserScopes.User] }],
         };
 
         beforeEach(async () => {

@@ -1,5 +1,5 @@
 import { Attribute } from "@typedorm/common";
-import { IsEnum, IsNotEmpty, IsString } from "class-validator";
+import { IsEnum, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export interface I2FAToken {
     expiry: Date;
@@ -20,24 +20,37 @@ export enum STATUS {
     APPROVED = "approved",
 }
 
-export enum PERMISSIONS {
-    USER = "user",
-    ADMIN_READ = "admin-read",
-    ADMIN_WRITE = "admin-write",
-    ADMIN_DELETE = "admin-delete",
+export enum UserScopes {
+    AdminDelete = "admin-delete",
+    AdminWrite = "admin-write",
+    AdminRead = "admin-read",
+    User = "user",
 }
+
+// export enum PERMISSIONS {
+//     USER = "user",
+//     ADMIN_READ = "admin-read",
+//     ADMIN_WRITE = "admin-write",
+//     ADMIN_DELETE = "admin-delete",
+// }
 
 export class Role {
     @IsString()
     organizationId: string;
 
     @Attribute()
-    @IsEnum(PERMISSIONS)
+    @IsEnum(UserScopes, { each: true })
+    // @ValidateNested({ each: true })
+    // @IsArray()
+    // @Type()
     @IsNotEmpty()
-    permission: PERMISSIONS;
+    permission: UserScopes[];
 }
 
 export class TwoFATokenObj {
+    @IsString()
     token: string;
+
+    @IsNumber()
     creationDate: number;
 }
