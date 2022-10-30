@@ -6,6 +6,7 @@ import xlsx from "node-xlsx";
 import { Organization } from "src/organization/organization.entity";
 import { OrganizationService } from "../organization/organization.service";
 import { User } from "../user/user.entity";
+import { PERMISSIONS, Role } from "../user/user.interface";
 import { UserService } from "../user/user.service";
 import { IS3File, SeededEmailParamsDTO } from "./s3.interface";
 
@@ -16,8 +17,7 @@ interface UserDTO {
     lastName: string;
     status: string;
     birthDate: string;
-    organizationId: Array<string>;
-    role: string;
+    role: Role[];
 }
 
 @Injectable()
@@ -71,25 +71,44 @@ export class S3Service {
         try {
             found_user = await this.userService.getUser(user[1]);
         } catch (e) {
+            // User does not exist in db
             const user_DTO: UserDTO = {
                 id: user[0],
                 birthDate: user[5],
                 email: user[1],
                 firstName: user[2],
                 lastName: user[3],
-                organizationId: [orgId],
+                role: [
+                    {
+                        organizationId: orgId,
+                        permission: PERMISSIONS.USER,
+                    },
+                ],
                 status: user[4],
-                role: "user",
             };
             const new_user: User = plainToClass(User, user_DTO);
             Logger.log(`Adding new user... ${new_user.email}`);
             await this.userService.createUser(new_user);
         }
-        if (found_user && !found_user.organizationId.includes(orgId)) {
-            found_user.organizationId.push(orgId);
+        // User exists in db but is not part or ogranization
+        if (found_user && !this.includesOrganization(found_user.roles, orgId)) {
+            found_user.roles.push({
+                organizationId: orgId,
+                permission: PERMISSIONS.USER,
+            });
             Logger.log(`Updating user... ${found_user.email}`);
             await this.userService.updateUser(found_user);
         }
+    }
+
+    private includesOrganization(roles: Role[], orgId: string) {
+        for (let i = 0; i < roles.length; i++) {
+            const role = roles[i];
+            if (role.organizationId === orgId) {
+                return true;
+            }
+        }
+        return false;
     }
 
     // @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)

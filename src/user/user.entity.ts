@@ -5,18 +5,8 @@ import {
     Entity,
     INDEX_TYPE,
 } from "@typedorm/common";
-import { IsEmail, IsEnum, IsNotEmpty } from "class-validator";
-
-export enum STATUS {
-    PENDING = "pending",
-    APPROVED = "approved",
-}
-
-export enum ROLES {
-    ADMIN = "admin",
-    OWNER = "owner",
-    USER = "user",
-}
+import { IsArray, IsEmail, IsEnum } from "class-validator";
+import { Role, STATUS } from "./user.interface";
 
 @Entity({
     name: "user",
@@ -36,10 +26,6 @@ export class User {
         strategy: AUTO_GENERATE_ATTRIBUTE_STRATEGY.UUID4,
     })
     id: string;
-
-    @Attribute()
-    @IsNotEmpty()
-    organizationId: string[];
 
     @Attribute()
     @IsEmail()
@@ -65,12 +51,10 @@ export class User {
     twoFATokenSecret?: string;
 
     @Attribute()
-    @IsEnum(ROLES)
-    role: string;
+    @IsArray()
+    roles: Role[];
 
     @Attribute()
-    // @IsString()
-    // @IsPhoneNumber()
     phoneNumber?: string;
 
     @AutoGenerateAttribute({
