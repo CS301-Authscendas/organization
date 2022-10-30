@@ -6,7 +6,7 @@ import xlsx from "node-xlsx";
 import { Organization } from "src/organization/organization.entity";
 import { OrganizationService } from "../organization/organization.service";
 import { User } from "../user/user.entity";
-import { PERMISSIONS, Role } from "../user/user.interface";
+import { Role, UserScopes } from "../user/user.interface";
 import { UserService } from "../user/user.service";
 import { IS3File, SeededEmailParamsDTO } from "./s3.interface";
 
@@ -81,7 +81,7 @@ export class S3Service {
                 role: [
                     {
                         organizationId: orgId,
-                        permission: PERMISSIONS.USER,
+                        permission: [UserScopes.User],
                     },
                 ],
                 status: user[4],
@@ -96,7 +96,7 @@ export class S3Service {
         if (found_user && !found_user.roles.some((role) => role.organizationId === orgId)) {
             found_user.roles.push({
                 organizationId: orgId,
-                permission: PERMISSIONS.USER,
+                permission: [UserScopes.User],
             });
             Logger.log(`Updating user... ${found_user.email}`);
             await this.userService.updateUser(found_user);
