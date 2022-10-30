@@ -21,9 +21,9 @@ export enum STATUS {
 }
 
 export enum UserScopes {
-    AdminDelete = "admin:delete",
-    AdminWrite = "admin:write",
-    AdminRead = "admin:read",
+    AdminDelete = "admin-delete",
+    AdminWrite = "admin-write",
+    AdminRead = "admin-read",
     User = "user",
 }
 
