@@ -124,7 +124,7 @@ export class S3Service {
     }
 
     async testSendMessage(): Promise<void> {
-        await this.triggerSeededEmail("Bobby Lim", "bobbytest6789@gmail.com", "fbde16b7-8835-40f6-a32a-5684cab88aa7");
+        await this.triggerSeededEmail("Bobby Lim", "bobbytest6789@gmail.com", "a49b0324-7580-4ee5-83e7-872d977a682a");
     }
 
     async triggerSeededEmail(name: string, email: string, id: string): Promise<void> {
