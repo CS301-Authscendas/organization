@@ -1,4 +1,5 @@
 import { ValidationPipe } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 import "reflect-metadata";
 import { AppModule } from "./app.module";
@@ -11,7 +12,8 @@ async function bootstrap() {
     const mqService = app.get<MQService>(MQService);
     app.connectMicroservice(mqService.getOptions("user"));
 
+    const configService = app.get(ConfigService);
     await app.startAllMicroservices();
-    await app.listen(3002);
+    await app.listen(configService.get("PORT") ?? 3002);
 }
 bootstrap();

@@ -1,5 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { STATUS, User } from "./user.entity";
+import { User } from "./user.entity";
+import { PERMISSIONS, STATUS } from "./user.interface";
 import { UserRepository } from "./user.repository";
 import { UserService } from "./user.service";
 
@@ -42,13 +43,14 @@ describe("UserService", () => {
                 email: "test@gmail.com",
                 firstName: "Bobby",
                 lastName: "Lim",
-                organizationId: ["grab"],
+                // organizationId: ["grab"],
                 password: "asdf1234",
                 status: STATUS.PENDING,
                 twoFATokenSecret: "1234",
                 phoneNumber: "91234567",
                 updatedAt: new Date().getTime(),
-                role: "USER",
+                // role: "USER",
+                roles: [{ organizationId: "MyBank", permission: PERMISSIONS.USER }],
             };
             jest.spyOn(userRepository, "getUser").mockImplementation(() => Promise.resolve(user));
             expect(await userService.getUser(user.email)).toBe(user);
@@ -84,13 +86,14 @@ describe("UserService", () => {
             email: "test@gmail.com",
             firstName: "Bobby",
             lastName: "Lim",
-            organizationId: ["grab"],
+            // organizationId: ["grab"],
             password: "asdf1234",
             status: STATUS.PENDING,
             twoFATokenSecret: "1234",
             phoneNumber: "91234567",
             updatedAt: new Date().getTime(),
-            role: "USER",
+            // role: "USER",
+            roles: [{ organizationId: "MyBank", permission: PERMISSIONS.USER }],
         };
 
         beforeEach(async () => {
