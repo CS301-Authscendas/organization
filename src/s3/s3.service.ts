@@ -1,5 +1,6 @@
 import { Inject, Injectable, Logger } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
+import { Cron, CronExpression } from "@nestjs/schedule";
 import { S3 } from "aws-sdk";
 import { plainToClass } from "class-transformer";
 import xlsx from "node-xlsx";
@@ -89,7 +90,7 @@ export class S3Service {
             const new_user: User = plainToClass(User, user_DTO);
             Logger.log(`Adding new user... ${new_user.email}`);
             // Comment out to prevent email spam
-            // this.triggerSeededEmail(`${new_user.firstName} ${new_user.lastName}`, new_user.email, new_user.id);
+            this.triggerSeededEmail(`${new_user.firstName} ${new_user.lastName}`, new_user.email, new_user.id);
             await this.userService.createUser(new_user);
         }
         // User exists in db but is not part or ogranization
@@ -109,7 +110,7 @@ export class S3Service {
     //     if (bucketName) await this.syncExcelFile(bucketName, "Project A - users.xlsx", "MyBank");
     // }
 
-    // @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+    @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
     async syncAllOrganisation() {
         const bucketName = process.env.AWS_S3_BUCKET_NAME;
         if (!bucketName) return;
