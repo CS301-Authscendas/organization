@@ -16,7 +16,7 @@ export class UserService {
     async getUser(email: string): Promise<User> {
         const user = await this.userRepository.getUser(email);
         delete user.password;
-        delete user.twoFATokenSecret;
+        delete user.twoFATokenObj;
         return user;
     }
 
@@ -51,7 +51,7 @@ export class UserService {
     async getUserById(id: string): Promise<User> {
         const user = await this.userRepository.getUserById(id);
         delete user.password;
-        delete user.twoFATokenSecret;
+        delete user.twoFATokenObj;
         return user;
     }
 }
