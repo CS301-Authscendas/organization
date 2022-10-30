@@ -68,9 +68,4 @@ export class UserController {
         const originalMsg = context.getMessage();
         channel.ack(originalMsg);
     }
-
-    @Get("/test/test")
-    async test() {
-        return this.userService.clear2FASecret("testing@gmail.com");
-    }
 }

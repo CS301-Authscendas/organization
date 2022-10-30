@@ -88,6 +88,8 @@ export class S3Service {
             };
             const new_user: User = plainToClass(User, user_DTO);
             Logger.log(`Adding new user... ${new_user.email}`);
+            // Comment out to prevent email spam
+            // this.triggerSeededEmail(`${new_user.firstName} ${new_user.lastName}`, new_user.email, new_user.id);
             await this.userService.createUser(new_user);
         }
         // User exists in db but is not part or ogranization
@@ -116,7 +118,6 @@ export class S3Service {
         organizations.map((organization: Organization) => {
             Logger.log(`Syncing for organization ${organization.id} ...`);
             const fileName = organization.id + ".xlsx";
-            // this.syncExcelFile(bucketName, fileName, organization.id);
             promises.push(this.syncExcelFile(bucketName, fileName, organization.id));
         });
         await Promise.all(promises);
