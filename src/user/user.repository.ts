@@ -73,19 +73,11 @@ export class UserRepository {
         let resp = await this.documentClient.scan(params);
         do {
             resp.Items?.forEach((itemdata: User) => {
-                // if (itemdata.organizationId.includes(org_id)) {
-                //     delete itemdata.password;
-                //     users.push(plainToClass(User, itemdata));
-                // }
-                const roles = itemdata.roles;
-                for (let i = 0; i < roles.length; i++) {
-                    const role = roles[i];
-                    if (role.organizationId === org_id) {
-                        delete itemdata.password;
-                        delete itemdata.twoFATokenObj;
-                        users.push(plainToClass(User, itemdata));
-                        break;
-                    }
+                if (itemdata.roles.some((role) => role.organizationId === org_id)) {
+                    delete itemdata.password;
+                    delete itemdata.twoFATokenObj;
+                    itemdata.roles = itemdata.roles.filter((role) => role.organizationId === org_id);
+                    users.push(plainToClass(User, itemdata));
                 }
             });
 

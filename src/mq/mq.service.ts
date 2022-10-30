@@ -9,7 +9,10 @@ export class MQService {
     getOptions(queueName: string, noAck = false): RmqOptions {
         const user = this.configService.get<string>("RABBITMQ_USER");
         const password = this.configService.get<string>("RABBITMQ_PASSWORD");
-        const host = this.configService.get<string>("RABBITMQ_HOST");
+        const host =
+            process.env.NODE_ENV === "production"
+                ? this.configService.get<string>("RABBITMQ_PROD_HOST")
+                : this.configService.get<string>("RABBITMQ_HOST");
         const port = this.configService.get<string>("RABBITMQ_PORT");
         // const queueName = this.configService.get<string>("RABBITMQ_QUEUE_NAME");
 
