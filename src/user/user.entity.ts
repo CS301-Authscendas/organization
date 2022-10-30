@@ -5,7 +5,8 @@ import {
     Entity,
     INDEX_TYPE,
 } from "@typedorm/common";
-import { IsArray, IsEmail, IsEnum } from "class-validator";
+import { Type } from "class-transformer";
+import { IsArray, IsEmail, IsEnum, ValidateNested } from "class-validator";
 import { Role, STATUS } from "./user.interface";
 
 @Entity({
@@ -52,6 +53,8 @@ export class User {
 
     @Attribute()
     @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => Role)
     roles: Role[];
 
     @Attribute()

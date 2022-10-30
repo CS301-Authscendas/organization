@@ -1,4 +1,5 @@
-import { IsEnum, IsString } from "class-validator";
+import { Attribute } from "@typedorm/common";
+import { IsEnum, IsNotEmpty, IsString } from "class-validator";
 
 export interface I2FAToken {
     expiry: Date;
@@ -30,6 +31,8 @@ export class Role {
     @IsString()
     organizationId: string;
 
+    @Attribute()
     @IsEnum(PERMISSIONS)
+    @IsNotEmpty()
     permission: PERMISSIONS;
 }
