@@ -12,7 +12,7 @@ export interface EmailDTO {
 
 export interface Set2FASecretDTO {
     email: string;
-    secret: string;
+    secret: TwoFATokenObj;
 }
 
 export enum STATUS {
@@ -35,4 +35,9 @@ export class Role {
     @IsEnum(PERMISSIONS)
     @IsNotEmpty()
     permission: PERMISSIONS;
+}
+
+export class TwoFATokenObj {
+    token: string;
+    creationDate: number;
 }
