@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { User } from "./user.entity";
+import { TwoFATokenObj } from "./user.interface";
 import { UserRepository } from "./user.repository";
 
 @Injectable()
@@ -32,13 +33,13 @@ export class UserService {
 
     async clear2FASecret(email: string): Promise<void> {
         const user = await this.userRepository.getUser(email);
-        user.twoFATokenSecret = undefined;
+        user.twoFATokenObj = undefined;
         await this.userRepository.updateUser(user);
     }
 
-    async set2FASecret(email: string, secret: string): Promise<void> {
+    async set2FASecret(email: string, secret: TwoFATokenObj): Promise<void> {
         const user = await this.userRepository.getUser(email);
-        user.twoFATokenSecret = secret;
+        user.twoFATokenObj = secret;
         await this.userRepository.updateUser(user);
     }
 

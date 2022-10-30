@@ -7,7 +7,7 @@ import {
 } from "@typedorm/common";
 import { Type } from "class-transformer";
 import { IsArray, IsEmail, IsEnum, ValidateNested } from "class-validator";
-import { Role, STATUS } from "./user.interface";
+import { Role, STATUS, TwoFATokenObj } from "./user.interface";
 
 @Entity({
     name: "user",
@@ -49,7 +49,13 @@ export class User {
     birthDate: string;
 
     @Attribute()
-    twoFATokenSecret?: string;
+    twoFATokenObj?: TwoFATokenObj;
+
+    // @Attribute()
+    // twoFATokenSecret?: string;
+
+    // @Attribute()
+    // twoFATokenCreationDate?: number;
 
     @Attribute()
     @IsArray()
