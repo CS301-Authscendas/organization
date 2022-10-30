@@ -1,5 +1,5 @@
 import { Attribute } from "@typedorm/common";
-import { IsEnum, IsNotEmpty, IsString } from "class-validator";
+import { IsEnum, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export interface I2FAToken {
     expiry: Date;
@@ -38,6 +38,9 @@ export class Role {
 }
 
 export class TwoFATokenObj {
+    @IsString()
     token: string;
+
+    @IsNumber()
     creationDate: number;
 }
