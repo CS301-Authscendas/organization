@@ -82,6 +82,7 @@ export class UserRepository {
                     const role = roles[i];
                     if (role.organizationId === org_id) {
                         delete itemdata.password;
+                        delete itemdata.twoFATokenSecret;
                         users.push(plainToClass(User, itemdata));
                         break;
                     }
