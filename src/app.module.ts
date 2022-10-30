@@ -18,11 +18,6 @@ import { UserModule } from "./user/user.module";
         CacheModule.register({ isGlobal: true, ttl: 300, max: 20 }),
     ],
     controllers: [AppController],
-    providers: [
-        // {
-        //     provide: APP_INTERCEPTOR,
-        //     useClass: CacheInterceptor,
-        // },
-    ],
+    providers: [],
 })
 export class AppModule {}

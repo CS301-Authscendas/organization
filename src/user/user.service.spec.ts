@@ -1,3 +1,4 @@
+import { CacheModule } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import { User } from "./user.entity";
 import { PERMISSIONS, STATUS } from "./user.interface";
@@ -22,6 +23,7 @@ describe("UserService", () => {
         const app: TestingModule = await Test.createTestingModule({
             controllers: [],
             providers: [UserService, UserRepository],
+            imports: [CacheModule.register()],
         }).compile();
 
         userService = app.get<UserService>(UserService);
