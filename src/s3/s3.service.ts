@@ -91,7 +91,7 @@ export class S3Service {
             await this.userService.createUser(new_user);
         }
         // User exists in db but is not part or ogranization
-        if (found_user && !this.includesOrganization(found_user.roles, orgId)) {
+        if (found_user && !found_user.roles.some((role) => role.organizationId === orgId)) {
             found_user.roles.push({
                 organizationId: orgId,
                 permission: PERMISSIONS.USER,
@@ -99,16 +99,6 @@ export class S3Service {
             Logger.log(`Updating user... ${found_user.email}`);
             await this.userService.updateUser(found_user);
         }
-    }
-
-    private includesOrganization(roles: Role[], orgId: string) {
-        for (let i = 0; i < roles.length; i++) {
-            const role = roles[i];
-            if (role.organizationId === orgId) {
-                return true;
-            }
-        }
-        return false;
     }
 
     // @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
