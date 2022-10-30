@@ -49,7 +49,7 @@ export class User {
     birthDate: string;
 
     @Attribute()
-    twoFATokenObj?: TwoFATokenObj;
+    twoFATokenObj?: TwoFATokenObj | null;
 
     // @Attribute()
     // twoFATokenSecret?: string;

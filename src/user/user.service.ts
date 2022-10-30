@@ -34,7 +34,11 @@ export class UserService {
 
     async clear2FASecret(email: string): Promise<void> {
         const user = await this.userRepository.getUser(email);
-        user.twoFATokenObj = undefined;
+        // user.twoFATokenObj = {
+        //     token: "",
+        //     creationDate: 0,
+        // };
+        user.twoFATokenObj = null;
         await this.userRepository.updateUser(user);
     }
 
