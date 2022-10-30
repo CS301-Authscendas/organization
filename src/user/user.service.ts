@@ -1,4 +1,4 @@
-import { CACHE_MANAGER, Inject, Injectable, Logger } from "@nestjs/common";
+import { CACHE_MANAGER, Inject, Injectable } from "@nestjs/common";
 import { Cache } from "cache-manager";
 import { User } from "./user.entity";
 import { TwoFATokenObj } from "./user.interface";
@@ -16,7 +16,6 @@ export class UserService {
     }
 
     async getUser(email: string): Promise<User> {
-        Logger.log(this.cacheManager);
         const cached_user: User | undefined = await this.cacheManager.get(email);
         if (cached_user) {
             delete cached_user.password;
