@@ -55,6 +55,12 @@ export class UserRepository {
             throw new BadRequestException(`User with email: ${newUser.email} does not exist`);
         }
         const { email, ...userDetails } = newUser;
+        const updatedRole = newUser.roles[0];
+
+        const filteredRoles = found_user.roles.filter((role) => role.organizationId !== updatedRole.organizationId);
+        filteredRoles.push(updatedRole);
+        userDetails.roles = filteredRoles;
+
         await this.entityManager.update(User, { email }, plainToClass(User, userDetails));
         return true;
     }
