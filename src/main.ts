@@ -1,4 +1,4 @@
-import { ValidationPipe } from "@nestjs/common";
+import { Logger, ValidationPipe } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 import "reflect-metadata";
@@ -14,6 +14,9 @@ async function bootstrap() {
 
     const configService = app.get(ConfigService);
     await app.startAllMicroservices();
-    await app.listen(configService.get("PORT") ?? 3002);
+
+    const port = configService.get("PORT");
+    Logger.log("Starting service on PORT --- " + port);
+    await app.listen(port ?? 3002);
 }
 bootstrap();
