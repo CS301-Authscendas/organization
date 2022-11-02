@@ -15,7 +15,7 @@ import { UserModule } from "./user/user.module";
         S3Module,
         MQModule,
         ScheduleModule.forRoot(),
-        CacheModule.register({ isGlobal: true, ttl: 300, max: 20 }),
+        CacheModule.register({ isGlobal: true, ttl: 5, max: 20 }),
     ],
     controllers: [AppController],
     providers: [],
