@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { Organization } from "./organization.entity";
 import { OrganizationRepository } from "./organization.repository";
 
@@ -26,12 +26,16 @@ export class OrganizationService {
         return await this.organizationRepository.getAllOrganizations();
     }
 
-    async getOrganizationsByList(ids: string[]): Promise<Organization[]> {
+    async getOrganizationsByList(ids: string[]) {
         const promises = [];
         for (let i = 0; i < ids.length; i++) {
+            if (ids[i].length === 0) {
+                throw new BadRequestException("id cannot be empty");
+            }
             promises.push(this.organizationRepository.queryById(ids[i]));
         }
-        const result: Organization[] = await Promise.all(promises);
-        return result;
+        const orgList: Organization[] = await Promise.all(promises);
+        const res = orgList.reduce((acc, curr) => ({ ...acc, [curr.id]: curr.name }), {});
+        return res;
     }
 }

@@ -1,8 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { IsArray, IsNotEmpty } from "class-validator";
 import { Organization } from "./organization.entity";
 import { OrganizationService } from "./organization.service";
 
-interface GetOrgsRequest {
+class GetOrgsRequest {
+    @IsNotEmpty()
+    @IsArray()
     ids: string[];
 }
 
