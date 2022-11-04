@@ -79,7 +79,7 @@ export class UserRepository {
         let resp = await this.documentClient.scan(params);
         do {
             resp.Items?.forEach((itemdata: User) => {
-                if (itemdata.roles.some((role) => role.organizationId === org_id)) {
+                if (itemdata.roles?.some((role) => role.organizationId === org_id)) {
                     delete itemdata.password;
                     delete itemdata.twoFATokenObj;
                     itemdata.roles = itemdata.roles.filter((role) => role.organizationId === org_id);
