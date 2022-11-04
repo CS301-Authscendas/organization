@@ -18,7 +18,7 @@ interface UserDTO {
     lastName: string;
     status: string;
     birthDate: string;
-    role: Role[];
+    roles: Role[];
 }
 
 @Injectable()
@@ -79,7 +79,7 @@ export class S3Service {
                 email: user[1],
                 firstName: user[2],
                 lastName: user[3],
-                role: [
+                roles: [
                     {
                         organizationId: orgId,
                         permission: [UserScopes.User],
