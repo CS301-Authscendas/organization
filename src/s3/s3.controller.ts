@@ -12,7 +12,7 @@ export class S3Controller {
 
     @Get("test-send")
     async test(): Promise<void> {
-        return await this.s3Service.testSendMessage();
+        return await this.s3Service.testSendHostedMessage();
     }
 
     @Get("test-sync-all-org")
