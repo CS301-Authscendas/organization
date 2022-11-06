@@ -62,7 +62,9 @@ export class S3Service {
         const promises = [];
         for (let i = 1; i < data.length; i++) {
             const user: any = data[i];
-            promises.push(this.addUserToDb(user, orgId, authMethod));
+            if (user[1]) {
+                promises.push(this.addUserToDb(user, orgId, authMethod));
+            }
         }
         await Promise.all(promises);
     }
