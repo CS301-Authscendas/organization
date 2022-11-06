@@ -3,8 +3,14 @@ export interface IS3File {
     data: unknown[];
 }
 
-export interface SeededEmailParamsDTO {
+export interface HostedSeededParamsDTO {
     id: string;
+    name: string;
+    email: string;
+}
+
+export interface SSOSeededParamsDTO {
+    organizationId: string;
     name: string;
     email: string;
 }
