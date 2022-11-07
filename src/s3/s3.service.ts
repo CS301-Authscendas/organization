@@ -105,10 +105,13 @@ export class S3Service {
         }
         // User exists in db but is not part or ogranization
         if (found_user && !found_user.roles.some((role) => role.organizationId === orgId)) {
-            found_user.roles.push({
-                organizationId: orgId,
-                permission: [UserScopes.User],
-            });
+            found_user.roles = [
+                {
+                    organizationId: orgId,
+                    permission: [UserScopes.User],
+                },
+            ];
+            Logger.log(found_user.roles);
             Logger.log(`Updating user... ${found_user.email}`);
             await this.userService.updateUser(found_user);
         }
