@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { RmqContext, RmqOptions, Transport } from "@nestjs/microservices";
 
@@ -14,6 +14,8 @@ export class MQService {
                 ? this.configService.get<string>("RABBITMQ_PROD_HOST")
                 : this.configService.get<string>("RABBITMQ_HOST");
         const port = this.configService.get<string>("RABBITMQ_PORT");
+
+        Logger.log(host);
         // const queueName = this.configService.get<string>("RABBITMQ_QUEUE_NAME");
 
         return {
