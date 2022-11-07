@@ -115,7 +115,7 @@ jobs:
 
   deploy_1b:
     name: Deploy to ECS AZ 1b
-    needs: build
+    needs: test
     runs-on: ubuntu-latest
     if: github.ref_name == 'main'
     steps:
