@@ -22,7 +22,7 @@ import { S3Service } from "./s3.service";
                             `${configService.get<string>("RABBITMQ_TRANSPORT_METHOD")}://${configService.get<string>(
                                 "RABBITMQ_USER",
                             )}:${configService.get<string>("RABBITMQ_PASSWORD")}@${configService.get<string>(
-                                "RABBITMQ_HOST",
+                                "RABBITMQ_PROD_HOST",
                             )}:${configService.get<string>("RABBITMQ_PORT")}`,
                         ],
                         queue: "notification",
